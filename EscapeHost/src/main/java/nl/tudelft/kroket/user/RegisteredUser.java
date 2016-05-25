@@ -5,34 +5,38 @@ import java.net.Socket;
 
 public class RegisteredUser extends User {
 
-    /** The player's name. */
-    private String name;
-    
-    public RegisteredUser(Socket socket, DataOutputStream stream, String name) {
-	super(socket, stream);
+  /** The player's name. */
+  private String name;
 
-	setName(name);
-    
-    }
+  public RegisteredUser(Socket socket, DataOutputStream stream, String name) {
+    super(socket, stream);
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
+    setName(name);
 
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    
-    public String toString() {
-	return String.format("User %s - %s - %s", getName(), getSocket()
-		.getRemoteSocketAddress(), getType());
-    }
+  }
+
+  /**
+   * Get the user´s name.
+   * 
+   * @return the name
+   */
+  public String getName() {
+    return name;
+  }
+
+  /**
+   * Set the user´s name.
+   * 
+   * @param name
+   *          the name to set
+   */
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String toString() {
+    return String.format("User %s - %s - %s", getName(), getSocket().getRemoteSocketAddress(),
+        getType());
+  }
 
 }
