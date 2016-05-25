@@ -5,3 +5,6 @@
 .classpath
 .project
 .settings/
+
+# Project specific: EscapeServer
+/target/
