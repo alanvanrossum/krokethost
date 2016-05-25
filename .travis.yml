@@ -1,0 +1,14 @@
+language: java
+jdk:
+  - oraclejdk8
+
+env:
+  - TEST_DIR=EscapeHost
+
+script: cd $TEST_DIR && mvn site -B
+
+after_script:
+  - echo "== Speciaal voor Jurgeb en Sander =="
+  - echo "== CHECKSTYLE_RESULT =="; cat "target/checkstyle-result.xml"; echo "== END_CHECKSTYLE_RESULT =="
+  - echo "== PMD_RESULT =="; cat "target/pmd.xml"; echo "== END_PMD_RESULT =="
+  - echo "== FINDBUGS_RESULT =="; cat "target/findbugsXml.xml"; echo "== END_FINDBUGS_RESULT =="
