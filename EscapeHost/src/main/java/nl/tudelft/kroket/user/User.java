@@ -46,6 +46,15 @@ public class User {
   }
 
   /**
+   * Get the outputstream of the socket.
+   * 
+   * @return the stream.
+   */
+  public DataOutputStream getStream() {
+    return stream;
+  }
+
+  /**
    * Set the outputstream to the socket.
    * 
    * @param stream
