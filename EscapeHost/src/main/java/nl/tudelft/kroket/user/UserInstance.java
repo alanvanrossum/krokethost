@@ -94,8 +94,10 @@ public class UserInstance implements Runnable {
     Logger.getInstance().info(className, input);
 
     HashMap<String, String> parsedInput = CommandParser.parseInput(input);
+    
+    String command = parsedInput.get("command");
 
-    switch (parsedInput.get("command")) {
+    switch (command) {
     case Protocol.COMMAND_TYPE:
       RegisteredUser player = EscapeHost.getUser(clientSocket);
 
@@ -125,22 +127,22 @@ public class UserInstance implements Runnable {
       break;
     case Protocol.COMMAND_INIT_VR:
       if (parsedInput.containsKey("param_0")) {
-        EscapeHost.sendVirtual(parsedInput.get("param_0"));
+        EscapeHost.sendVirtual(input);
       }
       break;
     case Protocol.COMMAND_INIT_MOBILE:
       if (parsedInput.containsKey("param_0")) {
-        EscapeHost.sendMobile(parsedInput.get("param_0"));
+        
+        EscapeHost.sendMobile(input);
       }
       break;
     case Protocol.COMMAND_ADMIN:
-
-      if (input.length() > Protocol.COMMAND_ADMIN.length() + 1)
-
+      if (input.length() > Protocol.COMMAND_ADMIN.length() + 1) {
         adminCommand(input.substring(Protocol.COMMAND_ADMIN.length() + 1));
+      }
       break;
     default:
-      LOG.error(className, "Invalid command.");
+      LOG.error(className, "Invalid command : " + command);
     }
 
   }

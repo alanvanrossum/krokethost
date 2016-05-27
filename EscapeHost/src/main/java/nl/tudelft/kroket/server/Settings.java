@@ -15,7 +15,7 @@ public class Settings {
   public static final int REQUIRED_VIRTUAL = 1;
 
   /** Number of mobile clients required to start the game. */
-  public static final int REQUIRED_MOBILE = 1;
+  public static final int REQUIRED_MOBILE = 2;
 
   /** Number of seconds before each status print. */
   public static final int INTERVAL_REPORT_STATUS = 30;
