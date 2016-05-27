@@ -35,7 +35,7 @@ public class EscapeHost implements Runnable {
   private static boolean initialized;
 
   /** The class name string. */
-  private static final String CLASSNAME = "EscapeServer";
+  private static final String CLASSNAME = "EscapeHost";
 
   /** The game activity boolean. */
   private static boolean gameActive = false;
