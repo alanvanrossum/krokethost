@@ -6,5 +6,31 @@
 .project
 .settings/
 
+<<<<<<< HEAD
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Ignore dll files
+*.dll
+
+# Mac
+.DS_Store
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+*.checkstyle
+
+# Project specific: EscapeServer
+/EscapeHost/target/
+=======
 # Project specific: EscapeServer
 /target/
+>>>>>>> f693f7362fedabccba607611f4864f814e0a70e5
