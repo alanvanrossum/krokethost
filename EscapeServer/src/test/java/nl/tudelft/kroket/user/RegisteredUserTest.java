@@ -17,9 +17,9 @@ import org.junit.Test;
  */
 public class RegisteredUserTest {
   
-  private ByteArrayOutputStream os;
+  private ByteArrayOutputStream ouputStream;
   private Socket socket;
-  private DataOutputStream dos;
+  private DataOutputStream dataOutputStream;
 
   /**
    * Sets up necessary objects.
@@ -27,8 +27,8 @@ public class RegisteredUserTest {
    */
   @Before
   public void setUp() throws Exception {
-    os = new ByteArrayOutputStream();
-    dos = new DataOutputStream(os);
+    ouputStream = new ByteArrayOutputStream();
+    dataOutputStream = new DataOutputStream(ouputStream);
     socket = new Socket();
   }
 
@@ -38,8 +38,8 @@ public class RegisteredUserTest {
    */
   @After
   public void tearDown() throws Exception {
-    os.close();
-    dos.close();
+    ouputStream.close();
+    dataOutputStream.close();
     socket.close();
   }
   
@@ -48,9 +48,9 @@ public class RegisteredUserTest {
    */
   @Test
   public void testRegisteredUser() {
-    RegisteredUser us = new RegisteredUser(socket, dos, "test");
+    RegisteredUser user = new RegisteredUser(socket, dataOutputStream, "test");
     
-    assertNotNull(us);
+    assertNotNull(user);
   }
 
   /**
@@ -58,10 +58,10 @@ public class RegisteredUserTest {
    */
   @Test
   public void testToString() {
-    RegisteredUser us = new RegisteredUser(socket, dos, "test");
+    RegisteredUser user = new RegisteredUser(socket, dataOutputStream, "test");
 
-    assertEquals(us.toString(), "User " + us.getName() + " - " + socket.getRemoteSocketAddress() 
-      + " - " + us.getType());
+    assertEquals(user.toString(), "User " + user.getName() + " - " + socket.getRemoteSocketAddress() 
+      + " - " + user.getType());
   }
 
 
@@ -70,11 +70,11 @@ public class RegisteredUserTest {
    */
   @Test
   public void testGetSetName() {
-    RegisteredUser us = new RegisteredUser(socket, dos, "test");
+    RegisteredUser user = new RegisteredUser(socket, dataOutputStream, "test");
     
-    assertEquals(us.getName(), "test");
-    us.setName("changed");
-    assertEquals(us.getName(), "changed");
+    assertEquals(user.getName(), "test");
+    user.setName("changed");
+    assertEquals(user.getName(), "changed");
   }
 
 

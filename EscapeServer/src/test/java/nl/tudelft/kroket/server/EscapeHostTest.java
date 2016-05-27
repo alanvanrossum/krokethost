@@ -20,19 +20,19 @@ import nl.tudelft.kroket.user.User.PlayerType;
  */
 public class EscapeHostTest {
 
-  private EscapeHost eh;
-  private ByteArrayOutputStream os;
+  private EscapeHost host;
+  private ByteArrayOutputStream outputStream;
   private Socket socket;
-  private DataOutputStream dos;
-  private  RegisteredUser us;
+  private DataOutputStream dataOutputStream;
+  private  RegisteredUser user;
   
   @Before
   public void setUp() throws Exception {
-    eh = new EscapeHost(1234);
-    os = new ByteArrayOutputStream();
-    dos = new DataOutputStream(os);
+    host = new EscapeHost(1234);
+    outputStream = new ByteArrayOutputStream();
+    dataOutputStream = new DataOutputStream(outputStream);
     socket = new Socket();
-    us = new RegisteredUser(socket, dos, "test");
+    user = new RegisteredUser(socket, dataOutputStream, "test");
   }
 
   @After
@@ -45,25 +45,25 @@ public class EscapeHostTest {
 
   @Test
   public void testEscapeHost() {
-    assertNotNull(eh);
+    assertNotNull(host);
   }
 
   @Test
   public void testRemovePlayer() {
     Socket socket2 = new Socket();
 
-    RegisteredUser us2 = new RegisteredUser(socket2, dos, "test2");
-    EscapeHost.registerPlayer(socket2, dos, "test2");
+    RegisteredUser us2 = new RegisteredUser(socket2, dataOutputStream, "test2");
+    EscapeHost.registerPlayer(socket2, dataOutputStream, "test2");
     assertTrue(EscapeHost.userList.containsValue(us2));
     EscapeHost.removePlayer(socket2);
-    assertFalse(EscapeHost.userList.containsValue(us));
+    assertFalse(EscapeHost.userList.containsValue(user));
     assertFalse(EscapeHost.userList.containsKey(socket2));
   }
 
   @Test
   public void testRegisterPlayer() {
-    assertEquals(us, EscapeHost.registerPlayer(socket, dos, "test"));
-    assertTrue(EscapeHost.userList.containsValue(us));
+    assertEquals(user, EscapeHost.registerPlayer(socket, dataOutputStream, "test"));
+    assertTrue(EscapeHost.userList.containsValue(user));
     assertTrue(EscapeHost.userList.containsKey(socket));
   }
 
