@@ -6,6 +6,7 @@
 .project
 .settings/
 
+<<<<<<< HEAD
 # Intellij
 .idea/
 *.iml
@@ -29,3 +30,7 @@
 
 # Project specific: EscapeServer
 /EscapeHost/target/
+=======
+# Project specific: EscapeServer
+/target/
+>>>>>>> f693f7362fedabccba607611f4864f814e0a70e5

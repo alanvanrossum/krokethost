@@ -334,7 +334,7 @@ public class EscapeHost implements Runnable {
         // as we just accepted a new connection, immediately print
         // status
         printUsers();
-       
+
       }
 
       // ...
