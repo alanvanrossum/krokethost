@@ -3,7 +3,7 @@ jdk:
   - oraclejdk8
   
 env:
-  - TEST_DIR=EscapeServer
+  - TEST_DIR=EscapeHost
 
 script: 
   - cd $TEST_DIR
