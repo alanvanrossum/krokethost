@@ -64,7 +64,7 @@ public class GameState_C extends GameState {
 			String color = getRandomColor();
 
 			//Make sure we do not have the same color directly after each other.
-			while (color.equals(colorSequence.get(pointer - 1)) && (pointer != 0)) {
+			while ((pointer != 0) && color.equals(colorSequence.get(pointer - 1))) {
 				color = getRandomColor();
 			}
 			colorSequence.add(color);
