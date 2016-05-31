@@ -2,6 +2,7 @@ package gamestate;
 
 import java.util.HashMap;
 
+import nl.tudelft.kroket.net.protocol.Protocol;
 import nl.tudelft.kroket.server.EscapeHost;
 
 /**
@@ -18,9 +19,10 @@ public class GameState_D extends GameState {
 	 */
 	@Override
 	public void startD(String input, HashMap<String, String> parsedInput) {
-		//Send the input to the mobile client.
+		//Send the input to the mobile client and virtual client.
 		if (parsedInput.containsKey("param_0")) {
 	        EscapeHost.sendMobile(input);
+	        EscapeHost.sendVirtual(Protocol.COMMAND_INIT_VR + "[startD]");
 	      }
 	}
 	
