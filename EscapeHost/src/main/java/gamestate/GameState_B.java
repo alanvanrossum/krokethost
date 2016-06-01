@@ -1,5 +1,7 @@
 package gamestate;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import nl.tudelft.kroket.net.protocol.Protocol;
@@ -19,10 +21,16 @@ public class GameState_B extends GameState {
 	 */
 	@Override
 	public void startB(String input, HashMap<String, String> parsedInput) {
+		ArrayList<String> buttonSequence = generateButtonSequence();
+		
 		//Send the input to the mobile client and virtual client
 		if (parsedInput.containsKey("param_0")) {
-	        EscapeHost.sendMobile(input);
-	        EscapeHost.sendVirtual(Protocol.COMMAND_INIT_VR + "[startB]");
+	        //EscapeHost.sendMobile(input);
+	        //EscapeHost.sendVirtual(Protocol.COMMAND_INIT_VR + "[startB]");
+	        
+	        
+	        EscapeHost.sendMobile(Protocol.COMMAND_INIT_MOBILE + "[startB]" + sequenceToString(buttonSequence));
+			EscapeHost.sendVirtual(Protocol.COMMAND_INIT_VR + "[startB]" + sequenceToString(buttonSequence));
 	      }
 	}
 	
@@ -43,4 +51,29 @@ public class GameState_B extends GameState {
 		GameState.getInstance().setState(new GameState_C());
 	}
 	
+	public ArrayList<String> generateButtonSequence() {
+		ArrayList<String> buttonSequence = new ArrayList<String>();
+		
+		buttonSequence.add("RED");
+		buttonSequence.add("BLUE");
+		buttonSequence.add("YELLOW");
+		buttonSequence.add("GREEN");
+		
+		Collections.shuffle(buttonSequence);
+		
+		return buttonSequence;
+	}
+	
+	/**
+	 * Generates a string in the right format from the arraylist of colors.
+	 * @param colors the arraylist with the colors
+	 * @return the string with the colors
+	 */
+	public String sequenceToString(ArrayList<String> buttons) {
+		StringBuilder res = new StringBuilder();
+		for (int i = 0; i < buttons.size(); i++) {
+			res.append("[" + buttons.get(i) + "]");
+		}
+		return res.toString();
+	}
 }
