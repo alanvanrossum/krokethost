@@ -13,6 +13,7 @@ import nl.tudelft.kroket.server.EscapeHost;
  */
 public class GameState_B extends GameState {
 
+	public ArrayList<String> sequencesTotal = new ArrayList<String>();
 	/**
 	 * Sends the input to the mobile client.
 	 * 
@@ -59,9 +60,12 @@ public class GameState_B extends GameState {
 		buttonSequence.add("YELLOW");
 		buttonSequence.add("GREEN");
 		
-		Collections.shuffle(buttonSequence);
-		
-		return buttonSequence;
+		for(int i = 0; i < 4; i++){
+			Collections.shuffle(buttonSequence);
+			sequencesTotal.addAll(buttonSequence);
+		}
+				
+		return sequencesTotal;
 	}
 	
 	/**
