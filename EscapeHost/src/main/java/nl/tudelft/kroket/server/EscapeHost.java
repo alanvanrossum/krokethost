@@ -433,14 +433,14 @@ public class EscapeHost implements Runnable {
    * @param message
    *          the message to be sent
    */
-  public static void sendAll(final String message) {
+  public static boolean sendAll(final String message) {
     for (Entry<Socket, RegisteredUser> entry : userList.entrySet()) {
 
       if (entry.getValue() != null) {
         entry.getValue().sendMessage(message);
       }
     }
-
+    return true;
   }
 
   /**

@@ -34,7 +34,6 @@ public class GameState {
 	 */
 	public void handleMessage(String input, HashMap<String, String> parsedInput) {
 		String action = parsedInput.get("param_0");
-
 		switch (action) {
 		//Inputs received from the VR client
 		case "startA":
@@ -80,6 +79,7 @@ public class GameState {
 	 * 
 	 * @param input the input string received from the client
 	 * @param parsedInput the parsed input string
+	 * @return 
 	 */
 	public void startA(String input, HashMap<String, String> parsedInput) {}
 	public void endA(String input, HashMap<String, String> parsedInput) {}
