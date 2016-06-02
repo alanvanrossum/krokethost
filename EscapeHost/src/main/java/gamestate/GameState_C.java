@@ -44,7 +44,7 @@ public class GameState_C extends GameState {
 	public void endC(String input, HashMap<String, String> parsedInput) {
 		//Send the input to the mobile client.
 		if (parsedInput.containsKey("param_0")) {
-			EscapeHost.sendMobile(input);
+			EscapeHost.sendAll(input);
 		}
 
 		//Update gameState.

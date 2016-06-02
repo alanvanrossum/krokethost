@@ -1,9 +1,8 @@
 package gamestate;
 
-import java.util.HashMap;
-
-import nl.tudelft.kroket.net.protocol.Protocol;
 import nl.tudelft.kroket.server.EscapeHost;
+
+import java.util.HashMap;
 
 /**
  * This is the first game state. In this game state minigame A can be
@@ -21,11 +20,10 @@ public class GameState_A extends GameState {
 	public void startA(String input, HashMap<String, String> parsedInput) {
 		//Send the input to the mobile client and VR client.
 		if (parsedInput.containsKey("param_0")) {
-	        EscapeHost.sendMobile(input);
-	        EscapeHost.sendVirtual(Protocol.COMMAND_INIT_VR + "[startA]");
-	      }
+			EscapeHost.sendAll(input);
+		}
 	}
-	
+
 	/**
 	 * Sends the input to the virtual client and changes the game state to B.
 	 * 
@@ -34,13 +32,13 @@ public class GameState_A extends GameState {
 	 */
 	@Override
 	public void endA(String input, HashMap<String, String> parsedInput) {
-		//Send the input to the virtual client.
+		//Send the input to the virtual and mobile client.
 		if (parsedInput.containsKey("param_0")) {
-	        EscapeHost.sendVirtual(input);
-	      }
-		
+			EscapeHost.sendAll(input);
+		}
+
 		//Update gameState.
 		GameState.getInstance().setState(new GameState_B());
 	}
-	
+
 }
