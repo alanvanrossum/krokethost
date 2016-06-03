@@ -39,11 +39,6 @@ public class GameState_ATest {
   public void tearDown(){
     GameState.getInstance().setState(new GameState_A());
   }
-  
-  @AfterClass
-  public static void cleanUpStream(){
-    System.setOut(null);
-  }
 
   /**
    * Test for startA method.

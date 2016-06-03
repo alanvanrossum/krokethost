@@ -40,10 +40,6 @@ public class GameState_BTest {
     GameState.getInstance().setState(new GameState_A());
   }
   
-  @AfterClass
-  public static void cleanUpStream(){
-    System.setOut(null);
-  }
 
   /**
    * Test for startB.

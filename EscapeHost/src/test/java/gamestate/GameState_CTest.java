@@ -44,11 +44,7 @@ public class GameState_CTest {
     GameState.getInstance().setState(new GameState_A());
     
   }
-  
-  @AfterClass
-  public static void cleanUpStream(){
-    System.setOut(null);
-  }
+
 
   /**
    * Test for startC.
