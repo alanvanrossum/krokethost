@@ -2,29 +2,24 @@ package gamestate;
 
 import static org.junit.Assert.*;
 
-import java.net.Socket;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.BDDMockito;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.stubbing.Answer;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-import nl.tudelft.kroket.server.EscapeHost;
-import nl.tudelft.kroket.user.RegisteredUser;
+import nl.tudelft.kroket.log.Logger.LogLevel;
 
 /**
  * Class for testing GameState_A class.
  * @author Kroket
  *
  */
-@RunWith(PowerMockRunner.class)
 public class GameState_ATest {
 
   private HashMap<String, String> parsedInput;
@@ -44,24 +39,42 @@ public class GameState_ATest {
   public void tearDown(){
     GameState.getInstance().setState(new GameState_A());
   }
-
   
+  @AfterClass
+  public static void cleanUpStream(){
+    System.setOut(null);
+  }
 
+  /**
+   * Test for startA method.
+   */
   @Test
   public void testStartA() {
     String input = "INITM[startA]";
     parsedInput.put("param_0", "startA");
-//    PowerMockito.mockStatic(EscapeHost.class);
-//    BDDMockito.given(EscapeHost.sendAll(input)).willReturn(true);
-//    GameState.getInstance().startA(input, parsedInput);
-//    PowerMockito.verifyStatic();
-//    EscapeHost.sendAll(input);
+    
+    ByteArrayOutputStream messages = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(messages));
+    
+    GameState.getInstance().startA(input, parsedInput);
+    
+    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+    String msgFormat = "%s %s: %s";
+    
+    String expected = "[" + timeFormat.format(new Date()) + "]: "
+        + String.format(msgFormat, LogLevel.INFO, "EscapeHost", "Message sent to 0 user(s)");
+    String message = messages.toString().trim();
+    assertEquals(expected, message);  
   }
 
+  /**
+   * Test for endA method.
+   */
   @Test
   public void testEndA() {
     String input = "INITM[DoneA]";
     parsedInput.put("param_0", "doneA");
+
     GameState.getInstance().endA(input, parsedInput);
     assertTrue(GameState.getInstance() instanceof GameState_B);
   }

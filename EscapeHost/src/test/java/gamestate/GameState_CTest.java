@@ -3,12 +3,19 @@ package gamestate;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
+
+import nl.tudelft.kroket.log.Logger.LogLevel;
 
 /**
  * Class for testing GameState_C class.
@@ -37,10 +44,34 @@ public class GameState_CTest {
     GameState.getInstance().setState(new GameState_A());
     
   }
+  
+  @AfterClass
+  public static void cleanUpStream(){
+    System.setOut(null);
+  }
 
+  /**
+   * Test for startC.
+   */
   @Test
   public void testStartC() {
-    //fail("Not yet implemented");
+    String input = "INITM[startC]";
+    parsedInput.put("param_0", "startC");
+    
+    ByteArrayOutputStream messages = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(messages));
+    
+    GameState.getInstance().startC(input, parsedInput);
+    
+    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+    String msgFormat = "%s %s: %s";
+    
+    String expected = "[" + timeFormat.format(new Date()) + "]: "
+        + String.format(msgFormat, LogLevel.INFO, "EscapeHost", "Message sent to mobile user(s)")
+        + "\r\n" + "[" + timeFormat.format(new Date()) + "]: "
+        + String.format(msgFormat, LogLevel.INFO, "EscapeHost", "Message sent to virtual user");
+    String message = messages.toString().trim();
+    assertEquals(expected.trim(), message);  
   }
 
   @Test
@@ -73,7 +104,6 @@ public class GameState_CTest {
     GameState_C gameState = new GameState_C();
     ArrayList<String> randomColours = gameState.generateColorSequence();
     String actual = gameState.sequenceToString(randomColours);
-    System.out.println(actual);
     String expected = "";
     for(String s : randomColours){
       expected += "[" + s + "]";
