@@ -1,5 +1,7 @@
 package nl.tudelft.kroket.user;
 
+import gamestate.GameState;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -108,10 +110,9 @@ public class UserInstance implements Runnable {
         String typeString = parsedInput.get("param_0");
         setPlayerType(player, typeString);
       }
-
       break;
+      
     case Protocol.COMMAND_REGISTER:
-
       if (parsedInput.containsKey("param_0")) {
 
         String playerName = parsedInput.get("param_0");
@@ -122,25 +123,20 @@ public class UserInstance implements Runnable {
           String playerType = parsedInput.get("param_1");
           setPlayerType(newPlayer, playerType);
         }
-
       }
       break;
+      
     case Protocol.COMMAND_INIT_VR:
-      if (parsedInput.containsKey("param_0")) {
-        EscapeHost.sendVirtual(input);
-      }
-      break;
     case Protocol.COMMAND_INIT_MOBILE:
-      if (parsedInput.containsKey("param_0")) {
-        
-        EscapeHost.sendMobile(input);
-      }
+    	GameState.getInstance().handleMessage(input, parsedInput);
       break;
+      
     case Protocol.COMMAND_ADMIN:
       if (input.length() > Protocol.COMMAND_ADMIN.length() + 1) {
         adminCommand(input.substring(Protocol.COMMAND_ADMIN.length() + 1));
       }
       break;
+      
     default:
       LOG.error(className, "Invalid command : " + command);
     }
