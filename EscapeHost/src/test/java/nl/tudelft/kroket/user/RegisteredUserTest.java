@@ -12,17 +12,19 @@ import org.junit.Test;
 
 /**
  * Class for testing RegisteredUser.
+ * 
  * @author Kroket
  *
  */
 public class RegisteredUserTest {
-  
+
   private ByteArrayOutputStream ouputStream;
   private Socket socket;
   private DataOutputStream dataOutputStream;
 
   /**
    * Sets up necessary objects.
+   * 
    * @throws Exception
    */
   @Before
@@ -34,6 +36,7 @@ public class RegisteredUserTest {
 
   /**
    * Tears down the objects.
+   * 
    * @throws Exception
    */
   @After
@@ -42,14 +45,14 @@ public class RegisteredUserTest {
     dataOutputStream.close();
     socket.close();
   }
-  
+
   /**
    * Test for the constructor.
    */
   @Test
   public void testRegisteredUser() {
     RegisteredUser user = new RegisteredUser(socket, dataOutputStream, "test");
-    
+
     assertNotNull(user);
   }
 
@@ -60,10 +63,9 @@ public class RegisteredUserTest {
   public void testToString() {
     RegisteredUser user = new RegisteredUser(socket, dataOutputStream, "test");
 
-    assertEquals(user.toString(), "User " + user.getName() + " - " + socket.getRemoteSocketAddress() 
-      + " - " + user.getType());
+    assertEquals(user.toString(),
+        "User " + user.getName() + " - " + socket.getRemoteSocketAddress() + " - " + user.getType());
   }
-
 
   /**
    * test for getters and setters for name.
@@ -71,11 +73,10 @@ public class RegisteredUserTest {
   @Test
   public void testGetSetName() {
     RegisteredUser user = new RegisteredUser(socket, dataOutputStream, "test");
-    
+
     assertEquals(user.getName(), "test");
     user.setName("changed");
     assertEquals(user.getName(), "changed");
   }
-
 
 }

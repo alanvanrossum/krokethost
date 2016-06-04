@@ -127,6 +127,4 @@ public final class Logger {
     }
   }
 
-
-
 }

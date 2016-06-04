@@ -103,7 +103,7 @@ public class User {
    * Get a human-readable string of the Player instance.
    */
   public String toString() {
-    return String.format("User %s - %s", getSocket().getRemoteSocketAddress(), getType());
+    return String.format("User %s - %s", getName(), getType());
   }
 
   /**
@@ -137,6 +137,10 @@ public class User {
     } catch (IOException error) {
       error.printStackTrace();
     }
+  }
+
+  public String getName() {
+    return "not registered";
   }
 
 }

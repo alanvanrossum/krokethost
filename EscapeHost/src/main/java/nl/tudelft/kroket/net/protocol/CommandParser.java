@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class CommandParser {
 
-  /** Regular expression pattern to recognise parameters in commands. */
+  /** Regular expression pattern to recognize parameters in commands. */
   private static Pattern paramPattern = Pattern.compile("\\[(.*?)\\]");
 
   /**

@@ -21,7 +21,7 @@ import nl.tudelft.kroket.user.User.PlayerType;
  */
 public class EscapeHostTest {
 
-  private EscapeHost host;
+  private GameHost host;
   private ByteArrayOutputStream outputStream;
   private Socket socket;
   private DataOutputStream dataOutputStream;
@@ -29,7 +29,7 @@ public class EscapeHostTest {
 
   @Before
   public void setUp() throws Exception {
-    host = new EscapeHost(1234);
+    host = new GameHost(1234);
     outputStream = new ByteArrayOutputStream();
     dataOutputStream = new DataOutputStream(outputStream);
     socket = new Socket();

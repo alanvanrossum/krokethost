@@ -34,9 +34,5 @@ public class RegisteredUser extends User {
     this.name = name;
   }
 
-  public String toString() {
-    return String.format("User %s - %s - %s", getName(), getSocket().getRemoteSocketAddress(),
-        getType());
-  }
 
 }
