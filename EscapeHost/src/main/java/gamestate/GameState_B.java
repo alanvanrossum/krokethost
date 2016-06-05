@@ -52,6 +52,14 @@ public class GameState_B extends GameState {
 		GameState.getInstance().setState(new GameState_C());
 	}
 	
+	@Override
+	public void endBMobile(String input, HashMap<String, String> parsedInput) {
+		//Send the check to the virtual client.
+		EscapeHost.sendVirtual("INITVR[doneBMobile]");
+	}
+	
+	
+	
 	public ArrayList<String> generateButtonSequence() {
 		ArrayList<String> buttonSequence = new ArrayList<String>();
 		
