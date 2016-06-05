@@ -134,6 +134,7 @@ public class User {
 
     try {
       stream.writeBytes(message);
+      stream.flush();
     } catch (IOException error) {
       error.printStackTrace();
     }

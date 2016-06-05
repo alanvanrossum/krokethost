@@ -47,7 +47,7 @@ public class ClientInstance implements Runnable {
   protected Socket clientSocket = null;
 
   private User user;
-  
+
   private GameHost host;
 
   private InputStream input;
@@ -103,9 +103,12 @@ public class ClientInstance implements Runnable {
 
         log.info(className, String.format("user %s is now set to type %s.", user.getName(), user
             .getType().toString()));
-
+        
+        user.sendMessage("SUCCESS");
+        
         // if the game isn't ready, let the new user know
         if (!GameHost.gameReady()) {
+          user.sendMessage("SUCCESS");
           user.sendMessage(GameHost.userCount() + " user(s) connected.");
         }
       } catch (IllegalArgumentException error) {
@@ -157,14 +160,14 @@ public class ClientInstance implements Runnable {
         }
       }
       break;
-//
-//    case Protocol.COMMAND_INIT_VR:
-//    case Protocol.COMMAND_INIT_MOBILE:
-//      // GameState.getInstance().handleMessage(input, parsedInput);
-//      
-//      host.getCurrentSession().handleMessage(input, parsedInput);
-//
-//      break;
+    //
+    // case Protocol.COMMAND_INIT_VR:
+    // case Protocol.COMMAND_INIT_MOBILE:
+    // // GameState.getInstance().handleMessage(input, parsedInput);
+    //
+    // host.getCurrentSession().handleMessage(input, parsedInput);
+    //
+    // break;
 
     case Protocol.COMMAND_ADMIN:
       if (input.length() > Protocol.COMMAND_ADMIN.length() + 1) {
@@ -176,7 +179,6 @@ public class ClientInstance implements Runnable {
       host.getCurrentSession().handleMessage(input, parsedInput);
       break;
 
-      
     default:
       log.error(className, "Invalid command : " + command);
     }
@@ -237,7 +239,7 @@ public class ClientInstance implements Runnable {
    */
   public void adminCommand(final String command) {
     if (command.startsWith("sendall")) {
-     host.sendAll(command.substring("sendall".length()));
+      host.sendAll(command.substring("sendall".length()));
     }
   }
 
