@@ -157,21 +157,26 @@ public class ClientInstance implements Runnable {
         }
       }
       break;
-
-    case Protocol.COMMAND_INIT_VR:
-    case Protocol.COMMAND_INIT_MOBILE:
-      // GameState.getInstance().handleMessage(input, parsedInput);
-      
-      host.getCurrentSession().handleMessage(input, parsedInput);
-
-      break;
+//
+//    case Protocol.COMMAND_INIT_VR:
+//    case Protocol.COMMAND_INIT_MOBILE:
+//      // GameState.getInstance().handleMessage(input, parsedInput);
+//      
+//      host.getCurrentSession().handleMessage(input, parsedInput);
+//
+//      break;
 
     case Protocol.COMMAND_ADMIN:
       if (input.length() > Protocol.COMMAND_ADMIN.length() + 1) {
         adminCommand(input.substring(Protocol.COMMAND_ADMIN.length() + 1));
       }
       break;
+    case Protocol.COMMAND_DONE:
+    case Protocol.COMMAND_BEGIN:
+      host.getCurrentSession().handleMessage(input, parsedInput);
+      break;
 
+      
     default:
       log.error(className, "Invalid command : " + command);
     }

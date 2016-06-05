@@ -335,11 +335,11 @@ public class GameHost implements Runnable {
    * @param message
    *          the string to be sent
    */
-  public static void sendMobile(String message) {
+  public void sendMobile(String message) {
     sendType(PlayerType.MOBILE, message);
   }
 
-  public static void sendVirtual(String message) {
+  public void sendVirtual(String message) {
     sendType(PlayerType.VIRTUAL, message);
   }
 

@@ -30,8 +30,8 @@ public class StateD extends GameState {
   public void handleInput(String input, HashMap<String, String> parsedInput) {
     // Send the input to the mobile client and virtual client.
     if (parsedInput.containsKey("param_0")) {
-      GameHost.sendMobile(input);
-      GameHost.sendVirtual(Protocol.COMMAND_INIT_VR + "[startD]");
+      host.sendMobile(input);
+      host.sendVirtual(Protocol.COMMAND_BEGIN + "[D]");
     }
   }
 

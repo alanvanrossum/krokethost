@@ -10,6 +10,7 @@ import nl.tudelft.kroket.gamestate.states.StateB;
 import nl.tudelft.kroket.gamestate.states.StateC;
 import nl.tudelft.kroket.gamestate.states.StateD;
 import nl.tudelft.kroket.gamestate.states.StateFinal;
+import nl.tudelft.kroket.gamestate.states.StateNone;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.net.protocol.Protocol;
 import nl.tudelft.kroket.user.RegisteredUser;
@@ -35,6 +36,8 @@ public class GameSession {
 
     this.host = host;
     this.sessionid = id;
+    
+    currentState = StateNone.getInstance();
 
     clientList = new HashMap<Socket, ClientInstance>();
 
@@ -82,12 +85,12 @@ public class GameSession {
 
   public void sendMobile(String message) {
     sendType(PlayerType.MOBILE, message);
-    Logger.getInstance().info("EscapeHost", "Message sent to virtual user(s)");
+    log.info("EscapeHost", "Message sent to virtual user(s)");
   }
 
   public void sendVirtual(String message) {
     sendType(PlayerType.VIRTUAL, message);
-    Logger.getInstance().info("EscapeHost", "Message sent to virtual user(s)");
+    log.info("EscapeHost", "Message sent to virtual user(s)");
   }
 
   private void sendAll(String message) {
@@ -111,6 +114,9 @@ public class GameSession {
   }
 
   public void setState(GameState newState) {
+    
+    log.info(className, "Setting GameState to " + newState.getClass().getSimpleName());
+    
     switchState(currentState, newState);
   }
 
@@ -120,7 +126,8 @@ public class GameSession {
       return;
     }
 
-    oldState.stop();
+    if (oldState != null)
+      oldState.stop();
 
     currentState = newState;
 
@@ -134,9 +141,9 @@ public class GameSession {
 
   public void printSession() {
 
-    System.out.printf("---------- session %d --------\r\n", sessionid);
+    System.out.printf("-- session %d --\r\n", sessionid);
     printUsers();
-    System.out.println("---------------------");
+    System.out.println("----------------");
 
   }
 
@@ -164,9 +171,9 @@ public class GameSession {
   }
 
   public void handleMessage(String input, HashMap<String, String> parsedInput) {
-    
+
     log.debug(className, "handleMessage: " + input);
-    
+
     if (parsedInput.get("command").equals("BEGIN")) {
       char character = parsedInput.get("param_0").charAt(0);
 
@@ -190,6 +197,11 @@ public class GameSession {
         break;
       }
     }
+    
+    if (parsedInput.get("command").equals("BEGIN")) {
+      setState(StateNone.getInstance());
+    }
+    
 
     if (currentState == null) {
       log.error(className, "currentState == null");

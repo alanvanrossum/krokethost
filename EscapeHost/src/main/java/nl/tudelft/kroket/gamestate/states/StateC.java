@@ -40,10 +40,10 @@ public class StateC extends GameState {
 
     // Send the sequence to the mobile and virtual client.
     if (parsedInput.containsKey("param_0")) {
-      GameHost.sendMobile(Protocol.COMMAND_INIT_MOBILE + "[startC]"
-          + sequenceToString(colorSequence));
-      GameHost.sendVirtual(Protocol.COMMAND_INIT_VR + "[startC]"
-          + sequenceToString(colorSequence));
+      
+      String message = Protocol.COMMAND_BEGIN + "[C][" + sequenceToString(colorSequence) + "]";
+      
+      host.sendAll(message);
     }
   }
 
