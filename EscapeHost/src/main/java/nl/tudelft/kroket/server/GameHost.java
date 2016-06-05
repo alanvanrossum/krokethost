@@ -1,6 +1,5 @@
 package nl.tudelft.kroket.server;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,7 +11,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import nl.tudelft.kroket.log.Logger;
-import nl.tudelft.kroket.net.protocol.Protocol;
 import nl.tudelft.kroket.user.User;
 import nl.tudelft.kroket.user.User.PlayerType;
 
@@ -73,6 +71,8 @@ public class GameHost implements Runnable {
 
     clientList.remove(clientSocket);
 
+    getCurrentSession().removeClient(clientSocket);
+    
     if (!clientSocket.isClosed()) {
       try {
         clientSocket.close();

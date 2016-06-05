@@ -69,7 +69,7 @@ public class CommandParser {
    * @return list of all parameters
    */
   public static List<String> parseParams(String input) {
-    // because there potentially could be many occurences
+    // because there potentially could be many occurrences
     // we use regular expressions here
 
     List<String> paramList = new ArrayList<String>();

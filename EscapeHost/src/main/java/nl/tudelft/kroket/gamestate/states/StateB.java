@@ -3,7 +3,6 @@ package nl.tudelft.kroket.gamestate.states;
 import java.util.HashMap;
 
 import nl.tudelft.kroket.gamestate.GameState;
-import nl.tudelft.kroket.server.GameHost;
 import nl.tudelft.kroket.server.Settings;
 
 /**
@@ -13,13 +12,12 @@ import nl.tudelft.kroket.server.Settings;
 public class StateB extends GameState {
 
   private int finishedCounter = 0;
-  
+
   private static GameState instance = new StateB();
-  
+
   public static GameState getInstance() {
     return instance;
   }
-
 
   /**
    * Sends the input to the virtual client and changes the game state to C.

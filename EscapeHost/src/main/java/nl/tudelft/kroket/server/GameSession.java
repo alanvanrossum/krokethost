@@ -159,12 +159,16 @@ public class GameSession {
   }
 
   public void removeClient(Socket socket) {
-    clientList.remove(socket);
+    if (clientList.containsKey(socket))
+      clientList.remove(socket);
   }
 
   public void handleMessage(String input, HashMap<String, String> parsedInput) {
-    if (parsedInput.get("param_0").startsWith("start")) {
-      char character = parsedInput.get("param_0").charAt(6);
+    
+    log.debug(className, "handleMessage: " + input);
+    
+    if (parsedInput.get("command").equals("BEGIN")) {
+      char character = parsedInput.get("param_0").charAt(0);
 
       switch (character) {
       case 'A':
@@ -187,8 +191,11 @@ public class GameSession {
       }
     }
 
-    currentState.handleInput(input, parsedInput);
-
+    if (currentState == null) {
+      log.error(className, "currentState == null");
+    } else {
+      currentState.handleInput(input, parsedInput);
+    }
   }
 
 }

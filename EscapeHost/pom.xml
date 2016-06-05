@@ -43,7 +43,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>nl.tudelft.kroket.server.EscapeHost</mainClass>
+							<mainClass>nl.tudelft.kroket.Launcher</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
