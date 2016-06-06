@@ -12,6 +12,8 @@ import nl.tudelft.kroket.server.GameHost;
  */
 public class StateD extends GameState {
 
+  private static final String STATE_NAME = "D";
+  
   private static GameState instance = new StateD();
 
   public static GameState getInstance() {
@@ -35,4 +37,10 @@ public class StateD extends GameState {
     }
   }
 
+  @Override
+  public String getName() {
+    return STATE_NAME;
+  }
+
+  
 }

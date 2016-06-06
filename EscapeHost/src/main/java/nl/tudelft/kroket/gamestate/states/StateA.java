@@ -9,12 +9,20 @@ import nl.tudelft.kroket.gamestate.GameState;
  * can progress to state B.
  */
 public class StateA extends GameState {
+  
+  private static final String STATE_NAME = "A";
 
   private static GameState instance = new StateA();
 
   public static GameState getInstance() {
     return instance;
   }
- 
+
+  @Override
+  public String getName() {
+    return STATE_NAME;
+  }
+
+  
 
 }

@@ -1,7 +1,9 @@
 package nl.tudelft.kroket.server;
 
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import nl.tudelft.kroket.gamestate.GameState;
@@ -10,7 +12,6 @@ import nl.tudelft.kroket.gamestate.states.StateB;
 import nl.tudelft.kroket.gamestate.states.StateC;
 import nl.tudelft.kroket.gamestate.states.StateD;
 import nl.tudelft.kroket.gamestate.states.StateFinal;
-import nl.tudelft.kroket.gamestate.states.StateNone;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.net.protocol.Protocol;
 import nl.tudelft.kroket.user.RegisteredUser;
@@ -24,6 +25,8 @@ public class GameSession {
   static final Logger log = Logger.getInstance();
 
   private String className = this.getClass().getSimpleName();
+  
+  private List<GameState> stateOrder = new ArrayList<GameState>();
 
   private HashMap<Socket, ClientInstance> clientList;
   private int sessionid;
@@ -36,18 +39,41 @@ public class GameSession {
 
     this.host = host;
     this.sessionid = id;
-    
-    currentState = StateNone.getInstance();
+
+   // currentState = StateA.getInstance();
 
     clientList = new HashMap<Socket, ClientInstance>();
 
     this.active = false;
+    
+    stateOrder.add(0, StateA.getInstance());
+    stateOrder.add(1, StateB.getInstance());
+    stateOrder.add(2, StateC.getInstance());
+    stateOrder.add(3, StateD.getInstance());
+    stateOrder.add(4, StateFinal.getInstance());
+    
+  }
+  
+  public void advance() {
+    
+    log.info(className, "Advancing...");
+    
+    int index = stateOrder.indexOf(currentState);
+    index += 1;
+    if (index < stateOrder.size()) {
+      setState(stateOrder.get(index));
+    }
+    else
+    {
+      log.error(className, "Cannot advance anymore");
+    }
   }
 
   public void startSession() {
     log.info(className, "Starting game...");
     sendAll(Protocol.COMMAND_START);
     active = true;
+    setState(StateA.getInstance());
   }
 
   public boolean isReady() {
@@ -114,25 +140,23 @@ public class GameSession {
   }
 
   public void setState(GameState newState) {
-    
+
     log.info(className, "Setting GameState to " + newState.getClass().getSimpleName());
-    
+
     switchState(currentState, newState);
   }
 
   private void switchState(GameState oldState, GameState newState) {
 
     if (oldState == newState) {
+      log.debug(className, "Not switching state, already in state " + newState.getClass().getSimpleName());
       return;
     }
-
-    if (oldState != null)
-      oldState.stop();
 
     currentState = newState;
 
     currentState.setHost(host);
-    currentState.start();
+    currentState.setSession(this);
   }
 
   public boolean isActive() {
@@ -174,34 +198,6 @@ public class GameSession {
 
     log.debug(className, "handleMessage: " + input);
 
-    if (parsedInput.get("command").equals("BEGIN")) {
-      char character = parsedInput.get("param_0").charAt(0);
-
-      switch (character) {
-      case 'A':
-        setState(StateA.getInstance());
-        break;
-      case 'B':
-        setState(StateB.getInstance());
-        break;
-      case 'C':
-        setState(StateC.getInstance());
-        break;
-      case 'D':
-        setState(StateD.getInstance());
-        break;
-      case 'F':
-        setState(StateFinal.getInstance());
-        break;
-      default:
-        break;
-      }
-    }
-    
-    if (parsedInput.get("command").equals("BEGIN")) {
-      setState(StateNone.getInstance());
-    }
-    
 
     if (currentState == null) {
       log.error(className, "currentState == null");

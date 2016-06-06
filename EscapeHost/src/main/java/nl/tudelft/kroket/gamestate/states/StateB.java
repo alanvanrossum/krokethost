@@ -11,6 +11,8 @@ import nl.tudelft.kroket.server.Settings;
  */
 public class StateB extends GameState {
 
+  private static final String STATE_NAME = "B";
+
   private int finishedCounter = 0;
 
   private static GameState instance = new StateB();
@@ -29,17 +31,35 @@ public class StateB extends GameState {
    */
   @Override
   public void handleInput(String input, HashMap<String, String> parsedInput) {
-    finishedCounter++;
 
-    // Do not finish when not all two mobile players have finished it.
-    if (finishedCounter < Settings.REQUIRED_MOBILE) {
+    System.out.println("handleInput in gameState B");
+
+    if (!parsedInput.containsKey("param_0") || !parsedInput.get("param_0").equals(getName())) {
       return;
     }
 
-    // Send the input to the virtual client.
-    if (parsedInput.containsKey("param_0")) {
-      host.sendAll(input);
+    if (!active) {
+      if (parsedInput.get("command").equals("BEGIN")) {
+        host.sendAll(input);
+        start();
+        finishedCounter = 0;
+      }
+    } else if (parsedInput.get("command").equals("DONE")) {
+
+      finishedCounter++;
+
+      // Do not finish when not all two mobile players have finished it.
+      if (finishedCounter >= Settings.REQUIRED_MOBILE) {
+
+        host.sendAll(input);
+        stop();
+      }
     }
+  }
+
+  @Override
+  public String getName() {
+    return STATE_NAME;
   }
 
 }

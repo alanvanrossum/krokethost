@@ -16,6 +16,8 @@ public class StateC extends GameState {
 
   private Random random = new Random();
 
+  private static final String STATE_NAME = "C";
+
   private static GameState instance = new StateC();
 
   public static GameState getInstance() {
@@ -25,25 +27,33 @@ public class StateC extends GameState {
   // The length of the color sequence.
   private int sequenceLength = 7;
 
-  /**
-   * Sends the input to the mobile client.
-   * 
-   * @param input
-   *          the input string received from the client
-   * @param parsedInput
-   *          the parsed input
-   */
   @Override
   public void handleInput(String input, HashMap<String, String> parsedInput) {
-    // Generate the color sequence that we will send to the players
-    ArrayList<String> colorSequence = generateColorSequence();
 
-    // Send the sequence to the mobile and virtual client.
-    if (parsedInput.containsKey("param_0")) {
-      
-      String message = Protocol.COMMAND_BEGIN + "[C][" + sequenceToString(colorSequence) + "]";
-      
-      host.sendAll(message);
+    System.out.println("handleInput in gameState c");
+
+    // make sure we received a message for the correct state
+    if (!parsedInput.containsKey("param_0") || !parsedInput.get("param_0").equals(getName())) {
+      return;
+    }
+
+    System.out.println("handleInput in gameState C");
+
+    if (!active) {
+      if (parsedInput.get("command").equals("BEGIN")) {
+        // Generate the color sequence that we will send to the players
+        ArrayList<String> colorSequence = generateColorSequence();
+
+        String message = String.format("%s[%s][%s]", Protocol.COMMAND_BEGIN, getName(),
+            sequenceToString(colorSequence));
+        host.sendAll(message);
+        start();
+      }
+    } else if (parsedInput.get("command").equals("DONE")) {
+      host.sendAll(input);
+      stop();
+    } else {
+      System.out.println("Input ignored.");
     }
   }
 
@@ -105,6 +115,11 @@ public class StateC extends GameState {
       res.append("[" + colors.get(i) + "]");
     }
     return res.toString();
+  }
+
+  @Override
+  public String getName() {
+    return STATE_NAME;
   }
 
 }
