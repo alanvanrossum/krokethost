@@ -48,12 +48,9 @@ public class GameState_B extends GameState {
 		//Send the input to the virtual client.
 		if (parsedInput.containsKey("param_0")) {
 	       
-	        //EscapeHost.sendAll(input);
 	        EscapeHost.sendVirtual(input);
-	        EscapeHost.sendMobile(input);
 	        EscapeHost.sendMobile("INITM[doneB]");
 			
-			//EscapeHost.sendAll("doneB");
 	      }
 		
 		//Update gameState.
@@ -61,9 +58,9 @@ public class GameState_B extends GameState {
 	}
 	
 	@Override
-	public void endBMobile(String input, HashMap<String, String> parsedInput) {
+	public void verifyB(String input, HashMap<String, String> parsedInput) {
 		//Send the check to the virtual client.
-		EscapeHost.sendVirtual("INITVR[doneBMobile]");
+		EscapeHost.sendVirtual("INITVR[verifyB]");
 	}
 	
 	
