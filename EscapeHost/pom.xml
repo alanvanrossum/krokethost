@@ -12,8 +12,16 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<powermock.version>1.5.1</powermock.version>
 	</properties>
-
+	
+	
+	<repositories>
+		<repository>
+			<id>repo</id>
+			<url>https://repository-master.mulesoft.org/nexus/content/groups/public/</url>
+		</repository>
+	</repositories>
 
 	<build>
 		<plugins>
@@ -123,6 +131,20 @@
 			<version>4.8.2</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+
+<dependency>
+    <groupId>jaxen</groupId>
+    <artifactId>jaxen</artifactId>
+    <version>1.1.6</version>
+</dependency>
+
+		
 	</dependencies>
 	<description>Server for Escaparade by Team Kroket</description>
 </project>

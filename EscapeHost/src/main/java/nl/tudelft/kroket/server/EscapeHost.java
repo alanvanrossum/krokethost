@@ -432,6 +432,7 @@ public class EscapeHost implements Runnable {
    * 
    * @param message
    *          the message to be sent
+   * @return 
    */
   public static void sendAll(final String message) {
     for (Entry<Socket, RegisteredUser> entry : userList.entrySet()) {
@@ -440,7 +441,7 @@ public class EscapeHost implements Runnable {
         entry.getValue().sendMessage(message);
       }
     }
-
+   Logger.getInstance().info("EscapeHost", "Message sent to " + userList.size() + " user(s)");
   }
 
   /**
@@ -457,6 +458,7 @@ public class EscapeHost implements Runnable {
     	  entry.getValue().sendMessage(message);
       }
     }
+    Logger.getInstance().info("EscapeHost", "Message sent to mobile user(s)");
   }
 
   /**
@@ -472,6 +474,7 @@ public class EscapeHost implements Runnable {
         entry.getValue().sendMessage(message);
       }
     }
+    Logger.getInstance().info("EscapeHost", "Message sent to virtual user");
   }
 
   private static void printClients() {

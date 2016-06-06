@@ -42,9 +42,9 @@ public class GameState_C extends GameState {
 	 */
 	@Override
 	public void endC(String input, HashMap<String, String> parsedInput) {
-		//Send the input to the virtual client.
+		//Send the input to the mobile client.
 		if (parsedInput.containsKey("param_0")) {
-			EscapeHost.sendVirtual(input);
+			EscapeHost.sendAll(input);
 		}
 
 		//Update gameState.
