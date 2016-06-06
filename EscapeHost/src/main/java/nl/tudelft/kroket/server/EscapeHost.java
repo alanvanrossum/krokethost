@@ -453,7 +453,8 @@ public class EscapeHost implements Runnable {
     for (Entry<Socket, RegisteredUser> entry : userList.entrySet()) {
 
       if (entry.getValue() != null && entry.getValue().getType() == PlayerType.MOBILE) {
-        entry.getValue().sendMessage(message);
+        System.out.println("message to mobile: " + message);
+    	  entry.getValue().sendMessage(message);
       }
     }
   }

@@ -45,7 +45,13 @@ public class GameState_B extends GameState {
 	public void endB(String input, HashMap<String, String> parsedInput) {
 		//Send the input to the virtual client.
 		if (parsedInput.containsKey("param_0")) {
+	       
+	        //EscapeHost.sendAll(input);
 	        EscapeHost.sendVirtual(input);
+	        EscapeHost.sendMobile(input);
+	        EscapeHost.sendMobile("INITM[doneB]");
+			
+			//EscapeHost.sendAll("doneB");
 	      }
 		
 		//Update gameState.
