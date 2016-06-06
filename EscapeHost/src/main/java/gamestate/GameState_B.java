@@ -33,6 +33,8 @@ public class GameState_B extends GameState {
 	        EscapeHost.sendMobile(Protocol.COMMAND_INIT_MOBILE + "[startB]" + sequenceToString(buttonSequence));
 			EscapeHost.sendVirtual(Protocol.COMMAND_INIT_VR + "[startB]" + sequenceToString(buttonSequence));
 	      }
+		
+		buttonSequence.clear();
 	}
 	
 	/**
