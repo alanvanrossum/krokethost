@@ -4,7 +4,7 @@
 
 	<groupId>nl.tudelft.kroket</groupId>
 	<artifactId>EscapeHost</artifactId>
-	<version>0.5-SNAPSHOT</version>
+	<version>0.7-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>EscapeHost</name>
@@ -43,7 +43,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>nl.tudelft.kroket.server.EscapeHost</mainClass>
+							<mainClass>nl.tudelft.kroket.Launcher</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

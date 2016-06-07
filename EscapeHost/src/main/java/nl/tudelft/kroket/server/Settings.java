@@ -18,7 +18,7 @@ public class Settings {
   public static final int REQUIRED_MOBILE = 2;
 
   /** Number of seconds before each status print. */
-  public static final int INTERVAL_REPORT_STATUS = 30;
+  public static final int INTERVAL_REPORT_STATUS = 120;
 
   /** Number of seconds until retrying to bind to the socket. */
   public static final int INTERVAL_SOCKET_RETRY = 5;
