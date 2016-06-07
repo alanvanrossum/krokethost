@@ -25,6 +25,8 @@ public class StateB extends GameState {
 
   private int finishedCounter = 0;
 
+  private boolean inputValid = false;
+
   private static GameState instance = new StateB();
 
   // The sequence that is send to the vr and mobile clients.
@@ -36,17 +38,18 @@ public class StateB extends GameState {
 
   @Override
   public void start() {
-    
+
     setActive(true);
     ArrayList<String> buttonSequence = generateButtonSequence();
 
     String message = String.format("%s[%s]%s", Protocol.COMMAND_BEGIN, getName(),
         sequenceToString(buttonSequence));
     host.sendAll(message);
-    
+
     log.info(className, message);
 
     finishedCounter = 0;
+    inputValid = false;
   }
 
   /**
@@ -76,19 +79,30 @@ public class StateB extends GameState {
 
       finishedCounter++;
 
-      log.info(className, "StateB: Players finished: " + finishedCounter);
+      log.info(className, "Mobile players completed: " + finishedCounter);
 
-      // Do not finish when not all two mobile players have finished it.
-      if (finishedCounter >= Settings.REQUIRED_MOBILE) {
-
-        stop();
-      }
     } else if (parsedInput.get("command").equals("RESTART")) {
 
       log.info(className, "RESTARTING State " + getName());
       start();
 
+    } else if (parsedInput.get("command").equals("DONE")) {
+
+      inputValid = true;
+      
+      log.info(className, "VR-client has completed this stage.");
     }
+
+    if (gameComplete()) {
+      
+      log.info(className, "Game complete!");
+      stop();
+    }
+
+  }
+
+  private boolean gameComplete() {
+    return (finishedCounter >= Settings.REQUIRED_MOBILE && inputValid);
   }
 
   /**
