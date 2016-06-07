@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import nl.tudelft.kroket.gamestate.GameState;
+import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.net.protocol.Protocol;
 import nl.tudelft.kroket.server.Settings;
 
@@ -13,6 +14,12 @@ import nl.tudelft.kroket.server.Settings;
  * can progress to state C.
  */
 public class StateB extends GameState {
+  
+  /** Singleton reference to logger. */
+  static final Logger log = Logger.getInstance();
+  
+  /** Class simpleName, used as tag for logging. */
+  private final String className = this.getClass().getSimpleName();
 
   private static final String STATE_NAME = "B";
 
@@ -59,6 +66,8 @@ public class StateB extends GameState {
     } else if (parsedInput.get("command").equals("VERIFY")) {
 
       finishedCounter++;
+      
+      log.info(className, "StateB: Players finished: " + finishedCounter);
 
       // Do not finish when not all two mobile players have finished it.
       if (finishedCounter >= Settings.REQUIRED_MOBILE) {

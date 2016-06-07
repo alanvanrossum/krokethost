@@ -10,5 +10,6 @@ public class Protocol {
   public static final String COMMAND_START = "START";
   public static final String COMMAND_BEGIN = "BEGIN";
   public static final String COMMAND_DONE = "DONE";
+  public static final String COMMAND_VERIFY = "VERIFY";
 
 }

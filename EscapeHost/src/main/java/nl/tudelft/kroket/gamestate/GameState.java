@@ -37,9 +37,7 @@ public abstract class GameState {
     if (!parsedInput.containsKey("param_0") || !parsedInput.get("param_0").equals(getName())) {
       return;
     }
-
-    System.out.println("handleInput in gameState");
-
+    
     if (!active) {
       if (parsedInput.get("command").equals("BEGIN")) {
         host.sendAll(input);

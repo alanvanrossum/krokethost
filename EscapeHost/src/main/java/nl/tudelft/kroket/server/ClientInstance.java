@@ -26,11 +26,13 @@ public class ClientInstance implements Runnable {
 
   /** Singleton reference to logger. */
   static final Logger log = Logger.getInstance();
+  
+  /** Class simpleName, used as tag for logging. */
+  private final String className = this.getClass().getSimpleName();
 
   private static final String CRLF = "\r\n";
 
-  /** Class simpleName, used as tag for logging. */
-  private final String className = this.getClass().getSimpleName();
+
 
   // private EscapeHost HOST = EscapeHost.getInstance();
 
@@ -176,6 +178,7 @@ public class ClientInstance implements Runnable {
       break;
     case Protocol.COMMAND_DONE:
     case Protocol.COMMAND_BEGIN:
+    case Protocol.COMMAND_VERIFY:
       host.getCurrentSession().handleMessage(input, parsedInput);
       break;
 
