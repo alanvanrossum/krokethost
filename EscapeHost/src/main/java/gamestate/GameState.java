@@ -60,6 +60,10 @@ public class GameState {
 		case "doneB":
 			endB(input, parsedInput);
 			break;
+			
+		case "verifyB":
+			verifyB(input, parsedInput);
+			break;	
 
 		case "doneC":
 			endC(input, parsedInput);
@@ -86,6 +90,7 @@ public class GameState {
 
 	public void startB(String input, HashMap<String, String> parsedInput) {}
 	public void endB(String input, HashMap<String, String> parsedInput) {}
+	public void verifyB(String input, HashMap<String, String> parsedInput) {}
 
 	public void startC(String input, HashMap<String, String> parsedInput) {}
 	public void endC(String input, HashMap<String, String> parsedInput) {}
