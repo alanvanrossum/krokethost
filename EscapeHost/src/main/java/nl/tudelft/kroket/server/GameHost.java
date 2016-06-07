@@ -314,6 +314,7 @@ public class GameHost implements Runnable {
         entry.getValue().sendMessage(message);
       }
     }
+    log.info("EscapeHost", "Sending message: " + message);
     log.info("EscapeHost", "Message sent to " + clientList.size() + " user(s)");
   }
 
@@ -326,6 +327,7 @@ public class GameHost implements Runnable {
         entry.getValue().sendMessage(message);
       }
     }
+    log.info("EscapeHost", "Sending message: " + message);
     log.info("EscapeHost", "Message sent to type: " + type.toString());
   }
 

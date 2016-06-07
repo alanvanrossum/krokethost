@@ -14,10 +14,10 @@ import nl.tudelft.kroket.server.Settings;
  * can progress to state C.
  */
 public class StateB extends GameState {
-  
+
   /** Singleton reference to logger. */
   static final Logger log = Logger.getInstance();
-  
+
   /** Class simpleName, used as tag for logging. */
   private final String className = this.getClass().getSimpleName();
 
@@ -34,6 +34,21 @@ public class StateB extends GameState {
     return instance;
   }
 
+  @Override
+  public void start() {
+    
+    setActive(true);
+    ArrayList<String> buttonSequence = generateButtonSequence();
+
+    String message = String.format("%s[%s]%s", Protocol.COMMAND_BEGIN, getName(),
+        sequenceToString(buttonSequence));
+    host.sendAll(message);
+    
+    log.info(className, message);
+
+    finishedCounter = 0;
+  }
+
   /**
    * Sends the input to the virtual client and changes the game state to C.
    * 
@@ -45,36 +60,34 @@ public class StateB extends GameState {
   @Override
   public void handleInput(String input, HashMap<String, String> parsedInput) {
 
-    System.out.println("handleInput in gameState B");
+    log.info(className, "handleInput in state " + getName());
 
     if (!parsedInput.containsKey("param_0") || !parsedInput.get("param_0").equals(getName())) {
       return;
     }
 
-    if (!active) {
+    if (!isActive()) {
+
       if (parsedInput.get("command").equals("BEGIN")) {
-
-        ArrayList<String> buttonSequence = generateButtonSequence();
-
-        String message = String.format("%s[%s]%s", Protocol.COMMAND_BEGIN, getName(),
-            sequenceToString(buttonSequence));
-        host.sendAll(message);
-
         start();
-        finishedCounter = 0;
       }
+
     } else if (parsedInput.get("command").equals("VERIFY")) {
 
       finishedCounter++;
-      
+
       log.info(className, "StateB: Players finished: " + finishedCounter);
 
       // Do not finish when not all two mobile players have finished it.
       if (finishedCounter >= Settings.REQUIRED_MOBILE) {
 
-        host.sendAll("DONE[B]");
         stop();
       }
+    } else if (parsedInput.get("command").equals("RESTART")) {
+
+      log.info(className, "RESTARTING State " + getName());
+      start();
+
     }
   }
 

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import nl.tudelft.kroket.gamestate.GameState;
+import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.net.protocol.Protocol;
 import nl.tudelft.kroket.server.GameHost;
 
@@ -13,6 +14,12 @@ import nl.tudelft.kroket.server.GameHost;
  * can progress to state D.
  */
 public class StateC extends GameState {
+
+  /** Singleton reference to logger. */
+  static final Logger log = Logger.getInstance();
+
+  /** Class simpleName, used as tag for logging. */
+  private final String className = this.getClass().getSimpleName();
 
   private Random random = new Random();
 
@@ -30,16 +37,14 @@ public class StateC extends GameState {
   @Override
   public void handleInput(String input, HashMap<String, String> parsedInput) {
 
-    System.out.println("handleInput in gameState c");
+    log.info(className, "handleInput in state " + getName());
 
     // make sure we received a message for the correct state
     if (!parsedInput.containsKey("param_0") || !parsedInput.get("param_0").equals(getName())) {
       return;
     }
 
-    System.out.println("handleInput in gameState C");
-
-    if (!active) {
+    if (!isActive()) {
       if (parsedInput.get("command").equals("BEGIN")) {
         // Generate the color sequence that we will send to the players
         ArrayList<String> colorSequence = generateColorSequence();
@@ -53,7 +58,7 @@ public class StateC extends GameState {
       host.sendAll(input);
       stop();
     } else {
-      System.out.println("Input ignored.");
+     log.info(className, "Input ignored.");
     }
   }
 

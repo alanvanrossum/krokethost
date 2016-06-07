@@ -14,7 +14,6 @@ import nl.tudelft.kroket.gamestate.states.StateD;
 import nl.tudelft.kroket.gamestate.states.StateFinal;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.net.protocol.Protocol;
-import nl.tudelft.kroket.user.RegisteredUser;
 import nl.tudelft.kroket.user.User;
 import nl.tudelft.kroket.user.User.PlayerType;
 
@@ -25,7 +24,7 @@ public class GameSession {
   static final Logger log = Logger.getInstance();
 
   private String className = this.getClass().getSimpleName();
-  
+
   private List<GameState> stateOrder = new ArrayList<GameState>();
 
   private HashMap<Socket, ClientInstance> clientList;
@@ -40,31 +39,29 @@ public class GameSession {
     this.host = host;
     this.sessionid = id;
 
-   // currentState = StateA.getInstance();
+    // currentState = StateA.getInstance();
 
     clientList = new HashMap<Socket, ClientInstance>();
 
     this.active = false;
-    
+
     stateOrder.add(0, StateA.getInstance());
     stateOrder.add(1, StateB.getInstance());
     stateOrder.add(2, StateC.getInstance());
     stateOrder.add(3, StateD.getInstance());
     stateOrder.add(4, StateFinal.getInstance());
-    
+
   }
-  
+
   public void advance() {
-    
+
     log.info(className, "Advancing...");
-    
+
     int index = stateOrder.indexOf(currentState);
     index += 1;
     if (index < stateOrder.size()) {
       setState(stateOrder.get(index));
-    }
-    else
-    {
+    } else {
       log.error(className, "Cannot advance anymore");
     }
   }
@@ -149,7 +146,8 @@ public class GameSession {
   private void switchState(GameState oldState, GameState newState) {
 
     if (oldState == newState) {
-      log.debug(className, "Not switching state, already in state " + newState.getClass().getSimpleName());
+      log.debug(className, "Not switching state, already in state "
+          + newState.getClass().getSimpleName());
       return;
     }
 
@@ -197,7 +195,6 @@ public class GameSession {
   public void handleMessage(String input, HashMap<String, String> parsedInput) {
 
     log.debug(className, "handleMessage: " + input);
-
 
     if (currentState == null) {
       log.error(className, "currentState == null");
