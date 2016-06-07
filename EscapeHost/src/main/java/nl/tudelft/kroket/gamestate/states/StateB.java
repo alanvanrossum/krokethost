@@ -102,7 +102,18 @@ public class StateB extends GameState {
   }
 
   private boolean gameComplete() {
-    return (finishedCounter >= Settings.REQUIRED_MOBILE && inputValid);
+  //return (finishedCounter >= Settings.REQUIRED_MOBILE && inputValid);
+	  if (finishedCounter >= Settings.REQUIRED_MOBILE) {
+		if(inputValid) {
+		  return true;
+		} else {
+		  log.info(className, "RESTARTING State " + getName());
+		  start(); 
+	    }
+	  } else {
+	    return false;
+	  }
+    return false;
   }
 
   /**
