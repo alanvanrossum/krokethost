@@ -30,6 +30,9 @@ public class GameState_B extends GameState {
 	public void startB(String input, HashMap<String, String> parsedInput) {
 		ArrayList<String> buttonSequence = generateButtonSequence();
 		
+		
+		verify_counter = 0;
+		
 		//Send the input to the mobile clients and virtual client
 		if (parsedInput.containsKey("param_0")) {
         
@@ -37,9 +40,8 @@ public class GameState_B extends GameState {
 			EscapeHost.sendVirtual(Protocol.COMMAND_INIT_VR + "[startB]" + sequenceToString(buttonSequence));
 
 	      }
-		
 		buttonSequence.clear();
-		verify_counter = 0;
+		
 	}
 	
 	/**
