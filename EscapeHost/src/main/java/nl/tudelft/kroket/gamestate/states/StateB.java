@@ -1,8 +1,11 @@
 package nl.tudelft.kroket.gamestate.states;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import nl.tudelft.kroket.gamestate.GameState;
+import nl.tudelft.kroket.net.protocol.Protocol;
 import nl.tudelft.kroket.server.Settings;
 
 /**
@@ -16,6 +19,9 @@ public class StateB extends GameState {
   private int finishedCounter = 0;
 
   private static GameState instance = new StateB();
+
+  // The sequence that is send to the vr and mobile clients.
+  public ArrayList<String> sequencesTotal = new ArrayList<String>();
 
   public static GameState getInstance() {
     return instance;
@@ -40,21 +46,63 @@ public class StateB extends GameState {
 
     if (!active) {
       if (parsedInput.get("command").equals("BEGIN")) {
-        host.sendAll(input);
+
+        ArrayList<String> buttonSequence = generateButtonSequence();
+
+        String message = String.format("%s[%s]%s", Protocol.COMMAND_BEGIN, getName(),
+            sequenceToString(buttonSequence));
+        host.sendAll(message);
+
         start();
         finishedCounter = 0;
       }
-    } else if (parsedInput.get("command").equals("DONE")) {
+    } else if (parsedInput.get("command").equals("VERIFY")) {
 
       finishedCounter++;
 
       // Do not finish when not all two mobile players have finished it.
       if (finishedCounter >= Settings.REQUIRED_MOBILE) {
 
-        host.sendAll(input);
+        host.sendAll("DONE[B]");
         stop();
       }
     }
+  }
+
+  /**
+   * generate a sequence of four 4 button sequences that together form a 16 button sequence.
+   * 
+   * @return sequencesTotal
+   */
+  public ArrayList<String> generateButtonSequence() {
+    ArrayList<String> buttonSequence = new ArrayList<String>();
+
+    buttonSequence.add("RED");
+    buttonSequence.add("BLUE");
+    buttonSequence.add("YELLOW");
+    buttonSequence.add("GREEN");
+
+    for (int i = 0; i < 4; i++) {
+      Collections.shuffle(buttonSequence);
+      sequencesTotal.addAll(buttonSequence);
+    }
+
+    return sequencesTotal;
+  }
+
+  /**
+   * Generates a string in the right format from the arraylist of colors.
+   * 
+   * @param colors
+   *          the arraylist with the colors
+   * @return the string with the colors
+   */
+  public String sequenceToString(ArrayList<String> buttons) {
+    StringBuilder res = new StringBuilder();
+    for (int i = 0; i < buttons.size(); i++) {
+      res.append("[" + buttons.get(i) + "]");
+    }
+    return res.toString();
   }
 
   @Override
