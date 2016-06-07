@@ -44,7 +44,7 @@ public class StateC extends GameState {
         // Generate the color sequence that we will send to the players
         ArrayList<String> colorSequence = generateColorSequence();
 
-        String message = String.format("%s[%s][%s]", Protocol.COMMAND_BEGIN, getName(),
+        String message = String.format("%s[%s]%s", Protocol.COMMAND_BEGIN, getName(),
             sequenceToString(colorSequence));
         host.sendAll(message);
         start();
