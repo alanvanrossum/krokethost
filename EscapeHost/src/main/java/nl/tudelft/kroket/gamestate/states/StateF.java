@@ -27,48 +27,47 @@ public class StateF extends GameState {
     public void start() {
         log.info(className, "Starting gameState " + getName());
         setActive(true);
-        newCorrectSequence();
+        //newCorrectSequence();
 
-        String message = String.format("%s[%s]%s", Protocol.COMMAND_BEGIN, getName(),
-                sequenceToString());
-        host.sendAll(message);
+        //String message = String.format("%s[%s]%s", Protocol.COMMAND_BEGIN, getName(),sequenceToString());
+        host.sendAll("BEGIN[F]");
 
     }
 
-    private String sequenceToString() {
-        StringBuilder res = new StringBuilder();
+//    private String sequenceToString() {
+//        StringBuilder res = new StringBuilder();
+//
+//        for (int i = 0; i < correctSequence.size(); i++) {
+//            res.append("[" + correctSequence.get(i) + "]");
+//        }
+//        return res.toString();
+//    }
 
-        for (int i = 0; i < correctSequence.size(); i++) {
-            res.append("[" + correctSequence.get(i) + "]");
-        }
-        return res.toString();
-    }
-
-    private void newCorrectSequence() {
-        correctSequence = new ArrayList<Integer>();
-        Random rand = new Random();
-        int firstNumber, secondNumber, thirdNumber;
-        firstNumber = rand.nextInt(40);
-        secondNumber = rand.nextInt(39);
-        if(secondNumber == firstNumber){
-            secondNumber++;
-        }
-        thirdNumber = rand.nextInt(38);
-        if(thirdNumber==firstNumber){
-            thirdNumber++;
-            if(thirdNumber==secondNumber){
-                thirdNumber++;
-            }
-        } else if(thirdNumber==secondNumber){
-            thirdNumber++;
-            if(thirdNumber==firstNumber){
-                thirdNumber++;
-            }
-        }
-        correctSequence.add(firstNumber);
-        correctSequence.add(secondNumber);
-        correctSequence.add(thirdNumber);
-    }
+//    private void newCorrectSequence() {
+//        correctSequence = new ArrayList<Integer>();
+//        Random rand = new Random();
+//        int firstNumber, secondNumber, thirdNumber;
+//        firstNumber = rand.nextInt(40);
+//        secondNumber = rand.nextInt(39);
+//        if(secondNumber == firstNumber){
+//            secondNumber++;
+//        }
+//        thirdNumber = rand.nextInt(38);
+//        if(thirdNumber==firstNumber){
+//            thirdNumber++;
+//            if(thirdNumber==secondNumber){
+//                thirdNumber++;
+//            }
+//        } else if(thirdNumber==secondNumber){
+//            thirdNumber++;
+//            if(thirdNumber==firstNumber){
+//                thirdNumber++;
+//            }
+//        }
+//        correctSequence.add(firstNumber);
+//        correctSequence.add(secondNumber);
+//        correctSequence.add(thirdNumber);
+//    }
 
     @Override
     public void handleInput(String input, HashMap<String, String> parsedInput){
@@ -84,7 +83,7 @@ public class StateF extends GameState {
                 start();
             }
 
-        } else if (parsedInput.get("command").equals("VERIFY")) {
+        } else if (parsedInput.get("command").equals("DONE")) {
             //game completes if just one player enters the correct code
             log.info(className, "Mobile players completed the TurnLock minigame");
             stop();
