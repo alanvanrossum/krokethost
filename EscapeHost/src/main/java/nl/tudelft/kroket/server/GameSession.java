@@ -7,11 +7,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import nl.tudelft.kroket.gamestate.GameState;
-import nl.tudelft.kroket.gamestate.states.StateA;
-import nl.tudelft.kroket.gamestate.states.StateB;
-import nl.tudelft.kroket.gamestate.states.StateC;
-import nl.tudelft.kroket.gamestate.states.StateD;
-import nl.tudelft.kroket.gamestate.states.StateFinal;
+import nl.tudelft.kroket.gamestate.states.*;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.net.protocol.Protocol;
 import nl.tudelft.kroket.user.User;
@@ -45,11 +41,12 @@ public class GameSession {
 
     this.active = false;
 
-    stateOrder.add(0, StateA.getInstance());
-    stateOrder.add(1, StateB.getInstance());
-    stateOrder.add(2, StateC.getInstance());
-    stateOrder.add(3, StateD.getInstance());
-    stateOrder.add(4, StateFinal.getInstance());
+      stateOrder.add(0, StateA.getInstance());
+      stateOrder.add(1, StateB.getInstance());
+      stateOrder.add(2, StateC.getInstance());
+      stateOrder.add(3, StateF.getInstance());
+      stateOrder.add(4, StateD.getInstance());
+      stateOrder.add(5, StateFinal.getInstance());
 
   }
 
