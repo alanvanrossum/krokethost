@@ -31,6 +31,8 @@ public class StateB extends GameState {
 
   // The sequence that is send to the vr and mobile clients.
   public ArrayList<String> sequencesTotal = new ArrayList<String>();
+  
+  public ArrayList<String> buttonSequence = new ArrayList<String>();
 
   public static GameState getInstance() {
     return instance;
@@ -40,16 +42,18 @@ public class StateB extends GameState {
   public void start() {
 
     setActive(true);
-    ArrayList<String> buttonSequence = generateButtonSequence();
+    
+    finishedCounter = 0;
+    inputValid = false;
+    buttonSequence.clear();
+    
+    buttonSequence = generateButtonSequence();
 
     String message = String.format("%s[%s]%s", Protocol.COMMAND_BEGIN, getName(),
         sequenceToString(buttonSequence));
     host.sendAll(message);
 
     log.info(className, message);
-
-    finishedCounter = 0;
-    inputValid = false;
   }
 
   /**
@@ -102,8 +106,20 @@ public class StateB extends GameState {
   }
 
   private boolean gameComplete() {
-    return (finishedCounter >= Settings.REQUIRED_MOBILE && inputValid);
-  }
+	  //  return (finishedCounter >= Settings.REQUIRED_MOBILE && inputValid);
+	  //return (finishedCounter >= Settings.REQUIRED_MOBILE && inputValid);
+		  if (finishedCounter >= Settings.REQUIRED_MOBILE) {
+			if(inputValid) {
+			  return true;
+			} else {
+			  log.info(className, "RESTARTING State " + getName());
+			  start(); 
+		    }
+		  } else {
+		    return false;
+		  }
+	    return false;
+	  }
 
   /**
    * generate a sequence of four 4 button sequences that together form a 16 button sequence.
