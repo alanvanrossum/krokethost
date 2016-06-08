@@ -41,12 +41,12 @@ public class GameSession {
 
     this.active = false;
 
-      stateOrder.add(0, StateA.getInstance());
-      stateOrder.add(1, StateB.getInstance());
-      stateOrder.add(2, StateC.getInstance());
-      stateOrder.add(3, StateF.getInstance());
-      stateOrder.add(4, StateD.getInstance());
-      stateOrder.add(5, StateFinal.getInstance());
+    stateOrder.add(0, StateA.getInstance());
+    stateOrder.add(1, StateB.getInstance());
+    stateOrder.add(2, StateC.getInstance());
+    stateOrder.add(3, StateF.getInstance());
+    //stateOrder.add(4, StateD.getInstance());
+    stateOrder.add(4, StateFinal.getInstance());
 
   }
 
@@ -129,19 +129,16 @@ public class GameSession {
   }
 
   public void stopSession() {
-
     active = false;
   }
 
   public void setState(GameState newState) {
-
     log.info(className, "Setting GameState to " + newState.getClass().getSimpleName());
 
     switchState(currentState, newState);
   }
 
   private void switchState(GameState oldState, GameState newState) {
-
     if (oldState == newState) {
       log.debug(className, "Not switching state, already in state "
           + newState.getClass().getSimpleName());
@@ -159,15 +156,12 @@ public class GameSession {
   }
 
   public void printSession() {
-
     System.out.printf("-- session %d --\r\n", sessionid);
     printUsers();
     System.out.println("----------------");
-
   }
 
   public void printUsers() {
-
     if (clientList.isEmpty()) {
       System.out.println("No players currently registered.");
     } else {
@@ -190,7 +184,6 @@ public class GameSession {
   }
 
   public void handleMessage(String input, HashMap<String, String> parsedInput) {
-
     log.debug(className, "handleMessage: " + input);
 
     if (currentState == null) {

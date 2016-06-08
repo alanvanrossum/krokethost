@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.HashMap;
 
-import nl.tudelft.kroket.gamestate.GameState;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.net.protocol.CommandParser;
 import nl.tudelft.kroket.net.protocol.Protocol;

@@ -1,11 +1,11 @@
 package nl.tudelft.kroket.gamestate;
 
-import java.util.HashMap;
-
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.net.protocol.Protocol;
 import nl.tudelft.kroket.server.GameHost;
 import nl.tudelft.kroket.server.GameSession;
+
+import java.util.HashMap;
 
 public abstract class GameState {
 
@@ -29,7 +29,6 @@ public abstract class GameState {
   }
 
   protected void start() {
-
     log.info(className, "Starting gameState " + getName());
     setActive(true);
   }

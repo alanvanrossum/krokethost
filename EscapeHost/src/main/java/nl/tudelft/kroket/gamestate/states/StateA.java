@@ -21,6 +21,11 @@ public class StateA extends GameState {
 
   private static GameState instance = new StateA();
 
+  /**
+   * Getter for the instance.
+   * 
+   * @return the instance.
+   */
   public static GameState getInstance() {
     return instance;
   }
