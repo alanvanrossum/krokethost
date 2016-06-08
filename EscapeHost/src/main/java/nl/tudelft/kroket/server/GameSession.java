@@ -44,7 +44,7 @@ public class GameSession {
     stateOrder.add(0, StateA.getInstance());
     stateOrder.add(1, StateB.getInstance());
     stateOrder.add(2, StateC.getInstance());
-    stateOrder.add(3, StateF.getInstance());
+    stateOrder.add(3, StateD.getInstance());
     stateOrder.add(4, StateFinal.getInstance());
 
   }
