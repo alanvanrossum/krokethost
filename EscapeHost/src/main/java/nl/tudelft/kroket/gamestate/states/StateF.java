@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-/**
- * Created by Swift on 8-6-2016.
- */
+
 public class StateF extends GameState {
     /** Singleton reference to logger. */
     static final Logger log = Logger.getInstance();
