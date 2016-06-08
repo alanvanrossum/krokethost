@@ -7,7 +7,7 @@ import nl.tudelft.kroket.gamestate.GameState;
  */
 public class StateFinal extends GameState {
 
-  private static final String STATE_NAME = "F";
+  private static final String STATE_NAME = "FINAL";
 
   private static GameState instance = new StateFinal();
 

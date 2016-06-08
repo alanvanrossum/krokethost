@@ -45,19 +45,17 @@ public class GameSession {
     stateOrder.add(1, StateB.getInstance());
     stateOrder.add(2, StateC.getInstance());
     stateOrder.add(3, StateF.getInstance());
-    //stateOrder.add(4, StateD.getInstance());
     stateOrder.add(4, StateFinal.getInstance());
 
   }
 
   public void advance() {
 
-    log.info(className, "Advancing...");
-
     int index = stateOrder.indexOf(currentState);
-    index += 1;
+    index++;
     if (index < stateOrder.size()) {
       setState(stateOrder.get(index));
+      log.info(className, "Advancing to " + stateOrder.get(index).getName());
     } else {
       log.error(className, "Cannot advance anymore");
     }
@@ -67,7 +65,7 @@ public class GameSession {
     log.info(className, "Starting game...");
     sendAll(Protocol.COMMAND_START);
     active = true;
-    setState(StateA.getInstance());
+    setState(stateOrder.get(0));
   }
 
   public boolean isReady() {
