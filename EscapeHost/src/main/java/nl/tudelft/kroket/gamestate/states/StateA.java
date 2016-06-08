@@ -28,11 +28,17 @@ public class StateA extends GameState {
     return instance;
   }
 
+  /**
+   * Get the name of this minigame.
+   */
   @Override
   public String getName() {
     return STATE_NAME;
   }
 
+  /**
+   * Stop the minigame.
+   */
   @Override
   public void stop() {
 	    log.info(className, "Stopping gameState " + getName());
@@ -47,6 +53,12 @@ public class StateA extends GameState {
 	    session.advance();
   }
   
+  /**
+   * Method that acts upon input received from the server.
+   * 
+   * @param input the input received.
+   * @param parsedInput the parsed input.
+   */
   @Override
   public void handleInput(String input, HashMap<String, String> parsedInput) {
 

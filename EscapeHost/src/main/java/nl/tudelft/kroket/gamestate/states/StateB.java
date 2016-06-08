@@ -38,7 +38,6 @@ public class StateB extends GameState {
 
   @Override
   public void start() {
-
     setActive(true);
     ArrayList<String> buttonSequence = generateButtonSequence();
 
@@ -101,6 +100,10 @@ public class StateB extends GameState {
 
   }
 
+  /**
+   * Checks whether the game is completed by every player involved.
+   * @return
+   */
   private boolean gameComplete() {
     return (finishedCounter >= Settings.REQUIRED_MOBILE && inputValid);
   }
@@ -141,6 +144,9 @@ public class StateB extends GameState {
     return res.toString();
   }
 
+  /**
+   * Returns the name of the state.
+   */
   @Override
   public String getName() {
     return STATE_NAME;
