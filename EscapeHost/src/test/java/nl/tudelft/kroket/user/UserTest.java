@@ -16,7 +16,9 @@ import java.net.UnknownHostException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
+import nl.tudelft.kroket.gamestate.states.StateD;
 import nl.tudelft.kroket.user.User.PlayerType;
 
 /**
@@ -36,22 +38,22 @@ public class UserTest {
    */
   @Before
   public void setUp() {
-    outputStream = new ByteArrayOutputStream();
-    dataOutputStream = new DataOutputStream(outputStream);
-    socket = new Socket();
+    outputStream = Mockito.mock(ByteArrayOutputStream.class);
+    dataOutputStream = Mockito.mock(DataOutputStream.class);
+    socket = Mockito.mock(Socket.class);
   }
 
-  /**
-   * Tears down objects after each test.
-   * 
-   * @throws IOException
-   */
-  @After
-  public void tearDown() throws IOException {
-    outputStream.close();
-    dataOutputStream.close();
-    socket.close();
-  }
+//  /**
+//   * Tears down objects after each test.
+//   * 
+//   * @throws IOException
+//   */
+//  @After
+//  public void tearDown() throws IOException {
+//    outputStream.close();
+//    dataOutputStream.close();
+//    socket.close();
+//  }
 
   /**
    * Test for the constructor.
@@ -125,5 +127,30 @@ public class UserTest {
     User user = new User(socket, dataOutputStream);
     assertFalse(user.isConnected());
   }
+  
+  
+  /**
+   * Test for sendMessage method.
+   */
+  @Test
+  public void testSendMessage() {
+    User user = new User(socket, dataOutputStream);
+    user.sendMessage("");
+    try {
+      Mockito.verify(dataOutputStream, Mockito.never()).flush();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+  
+  
+  /**
+   * Test for method.
+   */
+  @Test
+  public void test() {
+    
+  }
+  
 
 }

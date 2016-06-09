@@ -2,10 +2,7 @@ package nl.tudelft.kroket.gamestate.states;
 
 import static org.junit.Assert.*;
 
-import nl.tudelft.kroket.gamestate.GameState;
-import nl.tudelft.kroket.gamestate.states.StateA;
 import nl.tudelft.kroket.gamestate.states.StateB;
-import nl.tudelft.kroket.gamestate.states.StateC;
 import nl.tudelft.kroket.server.GameHost;
 import nl.tudelft.kroket.server.GameSession;
 
@@ -24,8 +21,8 @@ import java.util.HashMap;
  */
 public class StateBTest {
 
-  GameState gameState;
-  GameState stateSpy;
+  StateB gameState;
+  StateB stateSpy;
   GameHost host;
   GameSession gs;
   private HashMap<String, String> parsedInput;
@@ -68,17 +65,27 @@ public class StateBTest {
    */
   @Test
   public void testStart() {
+    gameState.generateButtonSequence();
+    assertTrue(gameState.getButtonSequence().isEmpty());
     gameState.start();
     Mockito.verify(host).sendAll(Mockito.anyString());
-   // Mockito.verify(stateSpy).generateButtonSequence();
+    assertFalse(gameState.getButtonSequence().isEmpty());
+    //Mockito.verify(stateSpy).generateButtonSequence();
   }
   
   /**
-   * Test for handleInput method.
+   * Test for handleInput method, with no param_0 in hashmap.
    */
   @Test
-  public void testHandleInput() {
-    
+  public void testInvalidHandleInput() {
+    String input = "test";
+    parsedInput.put("param_5", "B");
+    gameState.handleInput(input, parsedInput);
+    Mockito.verify(host, Mockito.never()).sendAll(Mockito.anyString());
+    parsedInput.remove("param_5");
+    parsedInput.put("param_0", "D");
+    gameState.handleInput(input, parsedInput);
+    Mockito.verify(host, Mockito.never()).sendAll(Mockito.anyString());
   }
   
   /**
@@ -86,52 +93,118 @@ public class StateBTest {
    */
   @Test
   public void testBeginHandleInput() {
-    gameState.setHost(host);
-    gameState.setSession(gs);
     String input = "BEGIN[A]";
-    parsedInput.put("param_0", "A");
+    parsedInput.put("param_0", "B");
     parsedInput.put("command", "BEGIN");
     gameState.handleInput(input, parsedInput);
-    //Mockito.verify(stateSpy).start();
+    Mockito.verify(host).sendAll(Mockito.anyString());
+   //Mockito.verify(stateSpy).start();
   }
   
   /**
-   * Test for handleInput method, with DONE message.
+   * Test for handleInput method, with DONE message with param_0.
    */
   @Test
   public void testDoneHandleInput() {
-    gameState.setHost(host);
-    gameState.setSession(gs);
     gameState.setActive(true);
     String input = "DONE[A]";
-    parsedInput.put("param_0", "A");
+    parsedInput.put("param_0", "B");
     parsedInput.put("command", "DONE");
     gameState.handleInput(input, parsedInput);
+    assertTrue(gameState.isInputValid());
     //Mockito.verify(stateSpy).stop();
   }
   
   /**
-   * Test for handleInpu method with invalid command.
+   * Test for handleInput method, with VERIFY message.
+   */
+  @Test
+  public void testVerifyHandleInput() {
+    gameState.setActive(true);
+    parsedInput.put("param_0", "B");
+    parsedInput.put("param_1", "TEST");
+    parsedInput.put("command", "VERIFY");
+    String input = "VERIFY[B]";
+    int previousCount = gameState.getFinishedCounter();
+    gameState.handleInput(input, parsedInput);
+    assertEquals(previousCount + 1, gameState.getFinishedCounter());
+    Mockito.verify(host, Mockito.never()).sendAll(Mockito.anyString());
+  }
+  
+  /**
+   * Test for handleInput method, with RESTART message.
+   */
+  @Test
+  public void testRestartHandleInput() {
+    gameState.setActive(true);
+    parsedInput.put("param_0", "B");
+    parsedInput.put("param_1", "TEST");
+    parsedInput.put("command", "RESTART");
+    String input = "RESTART[B]";
+    gameState.handleInput(input, parsedInput);
+    assertEquals(0, gameState.getFinishedCounter());
+    Mockito.verify(host).sendAll(Mockito.anyString());
+  }
+  
+  /**
+   * Test for handleInput method with invalid command.
    */
   @Test
   public void tesIgnoreHandleInput() {
-    gameState.setHost(host);
-    gameState.setSession(gs);
     gameState.setActive(true);
     String input = "DONE[A]";
-    parsedInput.put("param_0", "A");
+    parsedInput.put("param_0", "B");
     parsedInput.put("command", "test");
     gameState.handleInput(input, parsedInput);
     Mockito.verify(host, Mockito.never()).sendAll(Mockito.anyString());
   }
   
   /**
-   * Test for method.
+   * Test for handleInput method with invalid command and active = false.
    */
   @Test
-  public void test() {
-    
+  public void tesIgnoreHandleInputFalse() {
+    gameState.setActive(false);
+    String input = "DONE[A]";
+    parsedInput.put("param_0", "B");
+    parsedInput.put("command", "test");
+    gameState.handleInput(input, parsedInput);
+    Mockito.verify(host, Mockito.never()).sendAll(Mockito.anyString());
   }
-
-
+  
+  /**
+   * Test for handleInput method with invalid command and 
+   * active = true and gameComplete is true.
+   */
+  @Test
+  public void tesHandleInputGameComplete() {
+    gameState.setActive(true);
+    gameState.setInputValid(true);
+    gameState.setFinishedCounter(2);
+    parsedInput.put("param_0", "B");
+    String input = "DONE[A]"; 
+    parsedInput.put("command", "BEGIN");
+    gameState.handleInput(input, parsedInput);
+    Mockito.verify(host).sendAll(Mockito.anyString());
+    Mockito.verify(gs).advance();
+  }
+  
+  
+  /**
+   * Test for handleInput method with invalid command and 
+   * active = true and gameComplete is false.
+   */
+  @Test
+  public void tesHandleInputGameNotComplete() {
+    gameState.setActive(true);
+    gameState.setInputValid(false);
+    gameState.setFinishedCounter(2);
+    parsedInput.put("param_0", "B");
+    String input = "DONE[A]"; 
+    parsedInput.put("command", "BEGIN");
+    gameState.handleInput(input, parsedInput);
+    Mockito.verify(host).sendAll(Mockito.anyString());
+    Mockito.verify(gs, Mockito.never()).advance();
+  }
+ 
 }
