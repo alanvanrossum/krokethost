@@ -53,7 +53,7 @@ public class Launcher {
 
     while (!breakLoop) {
 
-      server.startSession();
+      server.update();
 
       try {
         Thread.sleep(1000);

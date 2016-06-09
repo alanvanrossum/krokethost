@@ -30,6 +30,10 @@ public class GameSession {
 
   private GameHost host;
 
+  private long timeLimit;
+  
+  private Boolean gameEnded = false;
+
   public GameSession(GameHost host, int id) {
 
     this.host = host;
@@ -64,8 +68,15 @@ public class GameSession {
   public void startSession() {
     log.info(className, "Starting game...");
     sendAll(Protocol.COMMAND_START);
+    sendAll(String.format("%s[%d]", Protocol.COMMAND_TIMELIMIT, Settings.TIMELIMIT));
     active = true;
+
+
+    timeLimit = System.currentTimeMillis() + Settings.TIMELIMIT * 1000;
+
+  //  setState(StateA.getInstance());
     setState(stateOrder.get(0));
+
   }
 
   public boolean isReady() {
@@ -189,6 +200,40 @@ public class GameSession {
     } else {
       currentState.handleInput(input, parsedInput);
     }
+  }
+
+  public void update() {
+
+    if (isActive()) {
+
+      long timeRemaining = Math.max(timeLimit - System.currentTimeMillis(), 0);
+
+      // TODO: stop the game if timeRemaining reaches value <= 0
+
+      //System.out.println("timeRemaining = " + timeRemaining);
+
+      if (timeRemaining <= 0 && gameEnded == false) {
+    	  gameEnded = true;
+        sendAll(String.format("%s", Protocol.COMMAND_GAMEOVER));
+      }
+
+    }
+  }
+  
+  /**
+   * Extend the time left. 
+   * @param time the time to be added in milliseconds.
+   */
+  public void extendTime(long time) {
+	  timeLimit = timeLimit + time;
+  }
+  
+  /**
+   * Setter for the gameEnded.
+   * @param ended the boolean to be set.
+   */
+  public void setGameEnded(Boolean ended) {
+	  gameEnded = true;
   }
 
 }
