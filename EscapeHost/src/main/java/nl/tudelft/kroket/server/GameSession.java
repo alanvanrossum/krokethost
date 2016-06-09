@@ -211,12 +211,18 @@ public class GameSession {
 
   public void update() {
 
-    long timeRemaining = Math.max(timeLimit - System.currentTimeMillis(), 0);
+    if (isActive()) {
 
-    // TODO: stop the game if timeRemaining reaches value <= 0
+      long timeRemaining = Math.max(timeLimit - System.currentTimeMillis(), 0);
 
-    if (timeRemaining <= 0) {
-      sendAll(String.format("%s", Protocol.COMMAND_GAMEOVER));
+      // TODO: stop the game if timeRemaining reaches value <= 0
+
+      System.out.println("timeRemaining = " + timeRemaining);
+
+      if (timeRemaining <= 0) {
+        sendAll(String.format("%s", Protocol.COMMAND_GAMEOVER));
+      }
+
     }
 
   }
