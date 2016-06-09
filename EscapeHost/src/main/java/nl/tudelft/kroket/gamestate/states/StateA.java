@@ -1,11 +1,9 @@
 package nl.tudelft.kroket.gamestate.states;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import nl.tudelft.kroket.gamestate.GameState;
 import nl.tudelft.kroket.log.Logger;
-import nl.tudelft.kroket.net.protocol.CommandParser;
 import nl.tudelft.kroket.net.protocol.Protocol;
 
 /**
@@ -24,6 +22,11 @@ public class StateA extends GameState {
 
   private static GameState instance = new StateA();
 
+  /**
+   * Getter for the instance.
+   * 
+   * @return the instance.
+   */
   public static GameState getInstance() {
     return instance;
   }

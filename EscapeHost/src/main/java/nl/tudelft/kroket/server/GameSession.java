@@ -7,11 +7,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import nl.tudelft.kroket.gamestate.GameState;
-import nl.tudelft.kroket.gamestate.states.StateA;
-import nl.tudelft.kroket.gamestate.states.StateB;
-import nl.tudelft.kroket.gamestate.states.StateC;
-import nl.tudelft.kroket.gamestate.states.StateD;
-import nl.tudelft.kroket.gamestate.states.StateFinal;
+import nl.tudelft.kroket.gamestate.states.*;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.net.protocol.Protocol;
 import nl.tudelft.kroket.user.User;
@@ -55,12 +51,11 @@ public class GameSession {
 
   public void advance() {
 
-    log.info(className, "Advancing...");
-
     int index = stateOrder.indexOf(currentState);
-    index += 1;
+    index++;
     if (index < stateOrder.size()) {
       setState(stateOrder.get(index));
+      log.info(className, "Advancing to " + stateOrder.get(index).getName());
     } else {
       log.error(className, "Cannot advance anymore");
     }
@@ -70,7 +65,7 @@ public class GameSession {
     log.info(className, "Starting game...");
     sendAll(Protocol.COMMAND_START);
     active = true;
-    setState(StateA.getInstance());
+    setState(stateOrder.get(0));
   }
 
   public boolean isReady() {
@@ -132,19 +127,16 @@ public class GameSession {
   }
 
   public void stopSession() {
-
     active = false;
   }
 
   public void setState(GameState newState) {
-
     log.info(className, "Setting GameState to " + newState.getClass().getSimpleName());
 
     switchState(currentState, newState);
   }
 
   private void switchState(GameState oldState, GameState newState) {
-
     if (oldState == newState) {
       log.debug(className, "Not switching state, already in state "
           + newState.getClass().getSimpleName());
@@ -162,15 +154,12 @@ public class GameSession {
   }
 
   public void printSession() {
-
     System.out.printf("-- session %d --\r\n", sessionid);
     printUsers();
     System.out.println("----------------");
-
   }
 
   public void printUsers() {
-
     if (clientList.isEmpty()) {
       System.out.println("No players currently registered.");
     } else {
@@ -193,7 +182,6 @@ public class GameSession {
   }
 
   public void handleMessage(String input, HashMap<String, String> parsedInput) {
-
     log.debug(className, "handleMessage: " + input);
 
     if (currentState == null) {
