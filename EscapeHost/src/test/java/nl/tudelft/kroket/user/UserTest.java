@@ -110,16 +110,15 @@ public class UserTest {
    */
   @Test
   public void testToString() {
-    // User user = new User(socket, dataOutputStream);
-    // assertEquals(user.toString(),
-    // "User " + socket.getRemoteSocketAddress() + " - " + user.getType());
+    User user = new User(socket, dataOutputStream);
+    assertEquals(user.toString(), "User not registered - " + user.getType());
   }
 
   /**
    * Test isConnected method.
    * 
-   * @throws IOException
-   * @throws UnknownHostException
+   * @throws IOException IOException
+   * @throws UnknownHostException Unknownhostexception
    */
   @Test
   public void testIsConnected() throws UnknownHostException, IOException {
