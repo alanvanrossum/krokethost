@@ -210,7 +210,7 @@ public class GameSession {
 
       // TODO: stop the game if timeRemaining reaches value <= 0
 
-      System.out.println("timeRemaining = " + timeRemaining);
+      //System.out.println("timeRemaining = " + timeRemaining);
 
       if (timeRemaining <= 0 && gameEnded == false) {
     	  gameEnded = true;
