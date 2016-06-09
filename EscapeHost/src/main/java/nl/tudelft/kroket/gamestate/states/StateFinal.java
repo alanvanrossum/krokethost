@@ -30,7 +30,6 @@ public class StateFinal extends GameState {
   protected void start() {
     log.info(className, "Starting gameState " + getName());
     setActive(true);
-    host.sendAll(Protocol.COMMAND_GAMEWON);
   }
 
   @Override

@@ -2,6 +2,7 @@ package nl.tudelft.kroket.gamestate.states;
 
 import nl.tudelft.kroket.gamestate.GameState;
 import nl.tudelft.kroket.log.Logger;
+import nl.tudelft.kroket.net.protocol.Protocol;
 
 /**
  * State for the lock game.
@@ -35,6 +36,20 @@ public class StateD extends GameState {
     @Override
     public String getName() {
         return STATE_NAME;
+    }
+    
+    /**
+     * Stop this state and end the game.
+     */
+    public void stop() {
+      log.info(className, "Stopping gameState " + getName());
+      host.sendAll(String.format("%s[%s]", Protocol.COMMAND_DONE, getName()));
+      setActive(false);
+      session.advance();
+
+      // End the game
+      host.sendAll(Protocol.COMMAND_GAMEWON);
+      session.setGameEnded(true);
     }
 
 }

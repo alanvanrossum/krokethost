@@ -227,5 +227,13 @@ public class GameSession {
   public void extendTime(long time) {
 	  timeLimit = timeLimit + time;
   }
+  
+  /**
+   * Setter for the gameEnded.
+   * @param ended the boolean to be set.
+   */
+  public void setGameEnded(Boolean ended) {
+	  gameEnded = true;
+  }
 
 }
