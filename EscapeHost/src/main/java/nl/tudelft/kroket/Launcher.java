@@ -4,6 +4,10 @@ import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.server.GameHost;
 import nl.tudelft.kroket.server.Settings;
 
+/**
+ * Launches the host.
+ * @author Team Kroket
+ */
 public class Launcher {
 
   /** The logger. */
