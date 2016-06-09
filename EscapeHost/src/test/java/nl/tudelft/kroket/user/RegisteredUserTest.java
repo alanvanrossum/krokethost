@@ -62,7 +62,6 @@ public class RegisteredUserTest {
   @Test
   public void testToString() {
     RegisteredUser user = new RegisteredUser(socket, dataOutputStream, "test");
-    System.out.println(user.toString());
     assertEquals(user.toString(), "User " + user.getName() + " - " + user.getType());
   }
 
