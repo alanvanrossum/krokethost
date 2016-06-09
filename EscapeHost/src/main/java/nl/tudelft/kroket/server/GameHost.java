@@ -53,6 +53,13 @@ public class GameHost implements Runnable {
 
     sessions.add(currentSessionId, new GameSession(this, currentSessionId));
   }
+  
+  public void update() {
+    startSession();
+    
+    getCurrentSession().update();
+    
+  }
 
   public GameSession getCurrentSession() {
 

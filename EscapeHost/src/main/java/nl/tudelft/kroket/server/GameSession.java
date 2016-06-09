@@ -34,6 +34,8 @@ public class GameSession {
 
   private GameHost host;
 
+  private long timeLimit;
+
   public GameSession(GameHost host, int id) {
 
     this.host = host;
@@ -69,7 +71,11 @@ public class GameSession {
   public void startSession() {
     log.info(className, "Starting game...");
     sendAll(Protocol.COMMAND_START);
+    sendAll(String.format("%s[%d]", Protocol.COMMAND_TIMELIMIT, Settings.TIMELIMIT));
     active = true;
+
+    timeLimit = System.currentTimeMillis() + Settings.TIMELIMIT * 1000;
+
     setState(StateA.getInstance());
   }
 
@@ -201,6 +207,18 @@ public class GameSession {
     } else {
       currentState.handleInput(input, parsedInput);
     }
+  }
+
+  public void update() {
+
+    long timeRemaining = Math.max(timeLimit - System.currentTimeMillis(), 0);
+
+    // TODO: stop the game if timeRemaining reaches value <= 0
+
+    if (timeRemaining <= 0) {
+      sendAll(String.format("%s", Protocol.COMMAND_GAMEOVER));
+    }
+
   }
 
 }

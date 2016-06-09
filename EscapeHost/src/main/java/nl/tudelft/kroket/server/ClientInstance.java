@@ -291,6 +291,7 @@ public class ClientInstance implements Runnable {
 
     try {
       outputStream.writeBytes(message);
+      outputStream.flush();
     } catch (IOException error) {
       error.printStackTrace();
     }
