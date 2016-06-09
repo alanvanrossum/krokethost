@@ -35,6 +35,8 @@ public class GameSession {
   private GameHost host;
 
   private long timeLimit;
+  
+  private Boolean gameEnded = false;
 
   public GameSession(GameHost host, int id) {
 
@@ -219,12 +221,20 @@ public class GameSession {
 
       System.out.println("timeRemaining = " + timeRemaining);
 
-      if (timeRemaining <= 0) {
+      if (timeRemaining <= 0 && gameEnded == false) {
+    	  gameEnded = true;
         sendAll(String.format("%s", Protocol.COMMAND_GAMEOVER));
       }
 
     }
-
+  }
+  
+  /**
+   * Extend the time left. 
+   * @param time the time to be added in milliseconds.
+   */
+  public void extendTime(long time) {
+	  timeLimit = timeLimit + time;
   }
 
 }
