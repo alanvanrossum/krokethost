@@ -25,13 +25,11 @@ public class ClientInstance implements Runnable {
 
   /** Singleton reference to logger. */
   static final Logger log = Logger.getInstance();
-  
+
   /** Class simpleName, used as tag for logging. */
   private final String className = this.getClass().getSimpleName();
 
   private static final String CRLF = "\r\n";
-
-
 
   // private EscapeHost HOST = EscapeHost.getInstance();
 
@@ -104,9 +102,9 @@ public class ClientInstance implements Runnable {
 
         log.info(className, String.format("user %s is now set to type %s.", user.getName(), user
             .getType().toString()));
-        
+
         user.sendMessage("SUCCESS");
-        
+
         // if the game isn't ready, let the new user know
         if (!GameHost.gameReady()) {
           user.sendMessage("SUCCESS");
@@ -249,6 +247,7 @@ public class ClientInstance implements Runnable {
   /**
    * Run the server thread.
    */
+  @SuppressWarnings("deprecation")
   public void run() {
     try {
 
