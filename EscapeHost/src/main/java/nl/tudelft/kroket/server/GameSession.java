@@ -226,7 +226,7 @@ public class GameSession {
    *          the time to be added in milliseconds.
    */
   public void extendTime(long time) {
-    timeLimit = timeLimit + time;
+    timeLimit += time;
   }
 
   /**
