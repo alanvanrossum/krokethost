@@ -7,7 +7,6 @@ import java.util.Random;
 import nl.tudelft.kroket.gamestate.GameState;
 import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.net.protocol.Protocol;
-import nl.tudelft.kroket.server.GameHost;
 
 /**
  * This is the third game state. In this game state minigame C can be started and ended. The game
@@ -58,7 +57,7 @@ public class StateC extends GameState {
       host.sendAll(input);
       stop();
     } else {
-     log.info(className, "Input ignored.");
+      log.info(className, "Input ignored.");
     }
   }
 
