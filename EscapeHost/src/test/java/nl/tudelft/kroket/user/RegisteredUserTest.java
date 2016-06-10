@@ -13,7 +13,7 @@ import org.junit.Test;
 /**
  * Class for testing RegisteredUser.
  * 
- * @author Kroket
+ * @author Team Kroket
  *
  */
 public class RegisteredUserTest {
@@ -25,7 +25,7 @@ public class RegisteredUserTest {
   /**
    * Sets up necessary objects.
    * 
-   * @throws Exception
+   * @throws Exception Exception
    */
   @Before
   public void setUp() throws Exception {
@@ -37,7 +37,7 @@ public class RegisteredUserTest {
   /**
    * Tears down the objects.
    * 
-   * @throws Exception
+   * @throws Exception Exception
    */
   @After
   public void tearDown() throws Exception {
@@ -61,10 +61,8 @@ public class RegisteredUserTest {
    */
   @Test
   public void testToString() {
-//    RegisteredUser user = new RegisteredUser(socket, dataOutputStream, "test");
-//
-//    assertEquals(user.toString(),
-//        "User " + user.getName() + " - " + socket.getRemoteSocketAddress() + " - " + user.getType());
+    RegisteredUser user = new RegisteredUser(socket, dataOutputStream, "test");
+    assertEquals(user.toString(), "User " + user.getName() + " - " + user.getType());
   }
 
   /**

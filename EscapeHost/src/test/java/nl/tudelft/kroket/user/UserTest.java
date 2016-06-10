@@ -16,7 +16,9 @@ import java.net.UnknownHostException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
+import nl.tudelft.kroket.gamestate.states.StateD;
 import nl.tudelft.kroket.user.User.PlayerType;
 
 /**
@@ -36,21 +38,9 @@ public class UserTest {
    */
   @Before
   public void setUp() {
-    outputStream = new ByteArrayOutputStream();
-    dataOutputStream = new DataOutputStream(outputStream);
-    socket = new Socket();
-  }
-
-  /**
-   * Tears down objects after each test.
-   * 
-   * @throws IOException
-   */
-  @After
-  public void tearDown() throws IOException {
-    outputStream.close();
-    dataOutputStream.close();
-    socket.close();
+    outputStream = Mockito.mock(ByteArrayOutputStream.class);
+    dataOutputStream = Mockito.mock(DataOutputStream.class);
+    socket = Mockito.mock(Socket.class);
   }
 
   /**
@@ -80,7 +70,7 @@ public class UserTest {
   /**
    * Test getter and setter socket.
    * 
-   * @throws IOException
+   * @throws IOException IOexception
    */
   @Test
   public void testGetSetSocket() throws IOException {
@@ -110,21 +100,36 @@ public class UserTest {
    */
   @Test
   public void testToString() {
-    // User user = new User(socket, dataOutputStream);
-    // assertEquals(user.toString(),
-    // "User " + socket.getRemoteSocketAddress() + " - " + user.getType());
+    User user = new User(socket, dataOutputStream);
+    assertEquals(user.toString(), "User not registered - " + user.getType());
   }
 
   /**
    * Test isConnected method.
    * 
-   * @throws IOException
-   * @throws UnknownHostException
+   * @throws IOException IOException
+   * @throws UnknownHostException Unknownhostexception
    */
   @Test
   public void testIsConnected() throws UnknownHostException, IOException {
     User user = new User(socket, dataOutputStream);
     assertFalse(user.isConnected());
   }
+  
+  
+  /**
+   * Test for sendMessage method.
+   */
+  @Test
+  public void testSendMessage() {
+    User user = new User(socket, dataOutputStream);
+    user.sendMessage("");
+    try {
+      Mockito.verify(dataOutputStream, Mockito.never()).flush();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+  
 
 }

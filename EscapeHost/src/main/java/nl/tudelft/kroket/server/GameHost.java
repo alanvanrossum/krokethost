@@ -62,7 +62,7 @@ public class GameHost implements Runnable {
   }
 
   public GameSession getCurrentSession() {
-
+  
     return sessions.get(currentSessionId);
   }
 
@@ -75,11 +75,10 @@ public class GameHost implements Runnable {
   public void removeClient(Socket clientSocket) {
 
     ClientInstance client = clientList.get(clientSocket);
-
     clientList.remove(clientSocket);
 
     getCurrentSession().removeClient(clientSocket);
-    
+
     if (!clientSocket.isClosed()) {
       try {
         clientSocket.close();
@@ -384,6 +383,37 @@ public class GameHost implements Runnable {
   public void printStatus() {
     printClients();
     printSessions();
+  }
+  
+  public static HashMap<Socket, ClientInstance> getClientList() {
+    return clientList;
+  }
+
+  public static String getClassName() {
+    return className;
+  }
+
+  public int getServerPort() {
+    return serverPort;
+  }
+
+  public int getCurrentSessionId() {
+    return currentSessionId;
+  }
+  
+  public boolean getStopped() {
+    return isStopped;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof GameHost) {
+      GameHost that = (GameHost)obj;
+      return (this.isStopped == that.getStopped() && this.getServerPort() == that.getServerPort()
+          && this.getClientList().keySet().containsAll(that.getClientList().keySet())
+              && this.clientList.values().contains(that.getClientList().values()));
+    }
+    return false;
   }
 
 }

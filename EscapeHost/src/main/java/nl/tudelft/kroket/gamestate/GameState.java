@@ -26,9 +26,17 @@ public abstract class GameState {
   protected boolean active = false;
 
   /**
-   * Set the host.
-   * @param host the host to be set.
+   * Gets the GameHost.
+   * @return the GameHost
    */
+  public GameHost getHost() {
+    return host;
+  }
+
+/**
+ * Set the host.
+ * @param host the host to be set.
+ */
   public void setHost(GameHost host) {
     this.host = host;
   }
@@ -44,7 +52,7 @@ public abstract class GameState {
   /**
    * Start a state.
    */
-  protected void start() {
+  public void start() {
     log.info(className, "Starting gameState " + getName());
     setActive(true);
   }
@@ -105,5 +113,14 @@ public abstract class GameState {
       log.info(className, "Input ignored.");
     }
   }
+
+  /**
+   * Get the session.
+   * @return the GameSession
+   */
+  public GameSession getSession() {
+    return session;
+  }
+  
 
 }

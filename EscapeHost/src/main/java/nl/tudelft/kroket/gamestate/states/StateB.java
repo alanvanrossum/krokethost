@@ -106,23 +106,24 @@ public class StateB extends GameState {
 
   /**
    * Checks whether the game is completed by every player involved.
+   * 
    * @return
    */
   private boolean gameComplete() {
-	  //  return (finishedCounter >= Settings.REQUIRED_MOBILE && inputValid);
-	  //return (finishedCounter >= Settings.REQUIRED_MOBILE && inputValid);
-		  if (finishedCounter >= Settings.REQUIRED_MOBILE) {
-			if(inputValid) {
-			  return true;
-			} else {
-			  log.info(className, "RESTARTING State " + getName());
-			  start(); 
-		    }
-		  } else {
-		    return false;
-		  }
-	    return false;
-	  }
+    // return (finishedCounter >= Settings.REQUIRED_MOBILE && inputValid);
+    // return (finishedCounter >= Settings.REQUIRED_MOBILE && inputValid);
+    if (finishedCounter >= Settings.REQUIRED_MOBILE) {
+      if (inputValid) {
+        return true;
+      } else {
+        log.info(className, "RESTARTING State " + getName());
+        start();
+      }
+    } else {
+      return false;
+    }
+    return false;
+  }
 
   /**
    * generate a sequence of four 4 button sequences that together form a 16 button sequence.
@@ -167,5 +168,27 @@ public class StateB extends GameState {
   public String getName() {
     return STATE_NAME;
   }
+
+  public int getFinishedCounter() {
+    return finishedCounter;
+  }
+  
+  public void setFinishedCounter(int count){
+    finishedCounter = count;
+  }
+
+  public boolean isInputValid() {
+    return inputValid;
+  }
+  
+  public void setInputValid(boolean bool) {
+    inputValid = bool;
+  }
+
+  public ArrayList<String> getButtonSequence() {
+    return buttonSequence;
+  }
+  
+ 
 
 }

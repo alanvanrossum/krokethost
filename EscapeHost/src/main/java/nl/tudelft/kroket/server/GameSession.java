@@ -238,5 +238,23 @@ public class GameSession {
   public void setGameEnded(Boolean ended) {
     gameEnded = true;
   }
+  
+  /**
+   * Gets the current state.
+   * @return a GameState object that is the current state
+   */
+  public GameState getCurrentState() {
+    return currentState;
+  }
+
+  /**
+   * gets the clientList.
+   * @return the hashmap with sockets and clientinstances
+   */
+  public HashMap<Socket, ClientInstance> getClientList() {
+    return clientList;
+  }
+  
+  
 
 }

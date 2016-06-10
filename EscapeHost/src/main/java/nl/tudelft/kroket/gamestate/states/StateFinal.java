@@ -27,7 +27,7 @@ public class StateFinal extends GameState {
    * Start a state.
    */
   @Override
-  protected void start() {
+  public void start() {
     log.info(className, "Starting gameState " + getName());
     setActive(true);
   }

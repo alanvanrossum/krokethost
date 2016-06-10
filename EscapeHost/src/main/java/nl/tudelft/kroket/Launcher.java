@@ -16,6 +16,10 @@ public class Launcher {
   /** The class name string. */
   private static final String className = "EscapeHost";
 
+  /**
+   * Main method that runs the launcher.
+   * @param args standard - not used.
+   */
   public static void main(String[] args) {
 
     log.info(className, "EscapeServer by Team Kroket");
