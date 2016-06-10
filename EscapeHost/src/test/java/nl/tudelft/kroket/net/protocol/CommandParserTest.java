@@ -10,6 +10,9 @@ import org.junit.Test;
 
 public class CommandParserTest extends CommandParser {
 
+  /**
+   * Test for parseinput method.
+   */
   @Test
   public void testParseInputStart() {
     String input = "START";
@@ -19,6 +22,9 @@ public class CommandParserTest extends CommandParser {
     assertEquals(parsed.get("command"), "START");
   }
 
+  /**
+   * Test for parseinputsingleparam method.
+   */
   @Test
   public void testParseInputSingleParam() {
     String input = "REGISTER[Player 1]";
@@ -29,6 +35,9 @@ public class CommandParserTest extends CommandParser {
     assertEquals("Player 1", parsed.get("param_0"));
   }
 
+  /**
+   * Test for parseinputmultiparam method.
+   */
   @Test
   public void testParseInputMultiParam() {
     String input = "A[B][C][D][E]";
@@ -55,6 +64,9 @@ public class CommandParserTest extends CommandParser {
     assertEquals("E", parsed.get("param_3"));
   }
 
+  /**
+   * Test for parseinputemptycommand method.
+   */
   @Test
   public void testParseInputEmptyCommand() {
     String input = "[A]";

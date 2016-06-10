@@ -131,7 +131,9 @@ public class StateCTest {
     Mockito.verify(host, Mockito.never()).sendAll(Mockito.anyString());
   }
 
-
+  /**
+   * Test for generatecolorsequence method.
+   */
   @Test
   public void testGenerateColorSequence() {
     StateC gameState = new StateC();
@@ -141,6 +143,9 @@ public class StateCTest {
         || randomColours.contains("GREEN") || randomColours.contains("YELLOW"));
   }
 
+  /**
+   * Test for getrandomcolor method.
+   */
   @Test
   public void testGetRandomColor() {
     StateC gameState = new StateC();
@@ -149,6 +154,9 @@ public class StateCTest {
         || colour.equals("YELLOW"));
   }
 
+  /**
+   * Test for sequencetostring method.
+   */
   @Test
   public void testSequenceToString() {
     StateC gameState = new StateC();

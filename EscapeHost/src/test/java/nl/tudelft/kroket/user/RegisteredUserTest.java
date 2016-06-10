@@ -13,7 +13,7 @@ import org.junit.Test;
 /**
  * Class for testing RegisteredUser.
  * 
- * @author Kroket
+ * @author Team Kroket
  *
  */
 public class RegisteredUserTest {

@@ -43,18 +43,6 @@ public class UserTest {
     socket = Mockito.mock(Socket.class);
   }
 
-//  /**
-//   * Tears down objects after each test.
-//   * 
-//   * @throws IOException
-//   */
-//  @After
-//  public void tearDown() throws IOException {
-//    outputStream.close();
-//    dataOutputStream.close();
-//    socket.close();
-//  }
-
   /**
    * Test for the constructor.
    */
@@ -82,7 +70,7 @@ public class UserTest {
   /**
    * Test getter and setter socket.
    * 
-   * @throws IOException
+   * @throws IOException IOexception
    */
   @Test
   public void testGetSetSocket() throws IOException {
@@ -141,15 +129,6 @@ public class UserTest {
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
-  
-  
-  /**
-   * Test for method.
-   */
-  @Test
-  public void test() {
-    
   }
   
 
