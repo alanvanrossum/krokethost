@@ -73,6 +73,7 @@ public class StateATest {
   public void testInvalidHandleInput() {
     String input = "test";
     parsedInput.put("param_5", "A");
+    parsedInput.put("command", "test");
     gameState.handleInput(input, parsedInput);
     Mockito.verify(host, Mockito.never()).sendAll(Mockito.anyString());
     parsedInput.remove("param_5");
