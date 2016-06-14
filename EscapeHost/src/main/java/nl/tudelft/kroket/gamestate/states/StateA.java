@@ -66,19 +66,22 @@ public class StateA extends GameState {
    */
   @Override
   public void handleInput(String input, HashMap<String, String> parsedInput) {
-
     log.info(className, "handleInput in state " + getName());
 
+    if (parsedInput.get("command").equals(Protocol.COMMAND_BONUSTIME)) {
+      session.extendTime(bonustime);
+    }
+    
     if (!parsedInput.containsKey("param_0") || !parsedInput.get("param_0").equals(getName())) {
       return;
     }
 
     if (!isActive()) {
-      if (parsedInput.get("command").equals("BEGIN")) {
+      if (parsedInput.get("command").equals(Protocol.COMMAND_BEGIN)) {
         host.sendAll(input);
         start();
       }
-    } else if (parsedInput.get("command").equals("DONE")) {
+    } else if (parsedInput.get("command").equals(Protocol.COMMAND_DONE)) {
       if (parsedInput.containsKey("param_1")) {
         advance();
         return;
@@ -86,7 +89,8 @@ public class StateA extends GameState {
 
       host.sendAll(input);
       stop();
-    } else {
+    
+  	} else {
       log.info(className, "Input ignored.");
     }
   }

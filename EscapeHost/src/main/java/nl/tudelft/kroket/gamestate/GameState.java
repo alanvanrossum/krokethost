@@ -24,6 +24,8 @@ public abstract class GameState {
   protected GameSession session;
 
   protected boolean active = false;
+  
+  protected int bonustime = 20;
 
   /**
    * Gets the GameHost.
@@ -97,16 +99,20 @@ public abstract class GameState {
   public void handleInput(String input, HashMap<String, String> parsedInput) {
     log.info(className, "handleInput in state " + getName());
 
+    if (parsedInput.get("command").equals(Protocol.COMMAND_BONUSTIME)) {
+      session.extendTime(bonustime);
+    }
+    
     if (!parsedInput.containsKey("param_0") || !parsedInput.get("param_0").equals(getName())) {
       return;
     }
 
     if (!isActive()) {
-      if (parsedInput.get("command").equals("BEGIN")) {
+      if (parsedInput.get("command").equals(Protocol.COMMAND_BEGIN)) {
         host.sendAll(input);
         start();
       }
-    } else if (parsedInput.get("command").equals("DONE")) {
+    } else if (parsedInput.get("command").equals(Protocol.COMMAND_DONE)) {
       host.sendAll(input);
       stop();
     } else {

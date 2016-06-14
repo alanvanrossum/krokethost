@@ -13,5 +13,5 @@ public class Protocol {
   public static final String COMMAND_TIMELIMIT = "TIMELIMIT";
   public static final String COMMAND_GAMEOVER = "GAMEOVER";
   public static final String COMMAND_GAMEWON = "GAMEWON";
-
+  public static final String COMMAND_BONUSTIME = "BONUSTIME";
 }

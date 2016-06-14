@@ -65,34 +65,32 @@ public class StateB extends GameState {
    */
   @Override
   public void handleInput(String input, HashMap<String, String> parsedInput) {
-
     log.info(className, "handleInput in state " + getName());
 
+    if (parsedInput.get("command").equals(Protocol.COMMAND_BONUSTIME)) {
+      session.extendTime(bonustime);
+    }
+    
     if (!parsedInput.containsKey("param_0") || !parsedInput.get("param_0").equals(getName())) {
       return;
     }
 
     if (!isActive()) {
 
-      if (parsedInput.get("command").equals("BEGIN")) {
+      if (parsedInput.get("command").equals(Protocol.COMMAND_BEGIN)) {
         start();
       }
 
-    } else if (parsedInput.get("command").equals("VERIFY")) {
-
+    } else if (parsedInput.get("command").equals(Protocol.COMMAND_VERIFY)) {
       finishedCounter++;
-
       log.info(className, "Mobile players completed: " + finishedCounter);
 
-    } else if (parsedInput.get("command").equals("RESTART")) {
-
+    } else if (parsedInput.get("command").equals(Protocol.COMMAND_RESTART)) {
       log.info(className, "RESTARTING State " + getName());
       start();
 
-    } else if (parsedInput.get("command").equals("DONE")) {
-
+    } else if (parsedInput.get("command").equals(Protocol.COMMAND_DONE)) {
       inputValid = true;
-      
       log.info(className, "VR-client has completed this stage.");
     }
 

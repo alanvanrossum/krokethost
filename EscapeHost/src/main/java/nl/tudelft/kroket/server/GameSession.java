@@ -220,13 +220,14 @@ public class GameSession {
   }
 
   /**
-   * Extend the time left.
+   * Extend the time left and send this to the virtual client.
    * 
    * @param time
-   *          the time to be added in milliseconds.
+   *          the time to be added in seconds.
    */
-  public void extendTime(long time) {
-    timeLimit += time;
+  public void extendTime(int seconds) {
+    timeLimit += seconds * 1000;
+    sendAll(String.format("%s[%d][%s]", Protocol.COMMAND_TIMELIMIT, seconds, Protocol.COMMAND_BONUSTIME));
   }
 
   /**

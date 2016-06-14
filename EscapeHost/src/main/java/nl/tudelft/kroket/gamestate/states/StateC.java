@@ -35,16 +35,19 @@ public class StateC extends GameState {
 
   @Override
   public void handleInput(String input, HashMap<String, String> parsedInput) {
-
     log.info(className, "handleInput in state " + getName());
 
+    if (parsedInput.get("command").equals(Protocol.COMMAND_BONUSTIME)) {
+      session.extendTime(bonustime);
+    }
+    
     // make sure we received a message for the correct state
     if (!parsedInput.containsKey("param_0") || !parsedInput.get("param_0").equals(getName())) {
       return;
     }
 
     if (!isActive()) {
-      if (parsedInput.get("command").equals("BEGIN")) {
+      if (parsedInput.get("command").equals(Protocol.COMMAND_BEGIN)) {
         // Generate the color sequence that we will send to the players
         ArrayList<String> colorSequence = generateColorSequence();
 
@@ -53,7 +56,7 @@ public class StateC extends GameState {
         host.sendAll(message);
         start();
       }
-    } else if (parsedInput.get("command").equals("DONE")) {
+    } else if (parsedInput.get("command").equals(Protocol.COMMAND_DONE)) {
       host.sendAll(input);
       stop();
     } else {
