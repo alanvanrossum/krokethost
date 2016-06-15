@@ -15,6 +15,7 @@ import nl.tudelft.kroket.user.User.PlayerType;
 
 /**
  * Class that handles the current game session.
+ * 
  * @author Team Kroket
  */
 public class GameSession {
@@ -308,6 +309,4 @@ public class GameSession {
     return clientList;
   }
   
-  
-
 }

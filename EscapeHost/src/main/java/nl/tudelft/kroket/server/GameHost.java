@@ -14,16 +14,23 @@ import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.user.User;
 import nl.tudelft.kroket.user.User.PlayerType;
 
+/**
+ * Class that hosts the game.
+ * 
+ * @author Team Kroket
+ */
 public class GameHost implements Runnable {
 
   /** List of clients connected to the server. */
   public static HashMap<Socket, ClientInstance> clientList = new HashMap<Socket, ClientInstance>();
 
+  /** List of game sessions. */
   private List<GameSession> sessions = new ArrayList<GameSession>();
 
   /** Value to keep track whether socket was initialized. */
   private static boolean initialized;
-
+  
+  /** Class name, used as tag for logging. */
   private static String className = "GameHost";
 
   /** The serverport int. */
@@ -41,11 +48,16 @@ public class GameHost implements Runnable {
   /** The running Thread. */
   protected Thread runningThread = null;
 
+  /** Id of the current session. */
   private int currentSessionId;
 
   /** The thread pool. */
   protected ExecutorService threadPool = Executors.newFixedThreadPool(Settings.THREAD_POOL_MAX);
 
+  /**
+   * Constructor for the GameHost.
+   * @param port the portnumber used.
+   */
   public GameHost(int port) {
     serverPort = port;
 
@@ -54,12 +66,19 @@ public class GameHost implements Runnable {
     sessions.add(currentSessionId, new GameSession(this, currentSessionId));
   }
   
+  /**
+   * Called upon update. Starts a session.
+   */
   public void update() {
     startSession();    
   }
 
+  /**
+   * Getter for the current game session.
+   * 
+   * @return the current game session.
+   */
   public GameSession getCurrentSession() {
-  
     return sessions.get(currentSessionId);
   }
 
@@ -181,8 +200,10 @@ public class GameHost implements Runnable {
     }
   }
 
+  /**
+   * Starts the current game session. 
+   */
   public void startSession() {
-
     GameSession session = getCurrentSession();
 
     if (!session.isReady()) {
@@ -198,6 +219,9 @@ public class GameHost implements Runnable {
 
   }
 
+  /**
+   * Stops the current game session.
+   */
   public void stopSession() {
     GameSession session = getCurrentSession();
 
@@ -210,20 +234,36 @@ public class GameHost implements Runnable {
     }
   }
 
+  /**
+   * Getter for the list of game sessions.
+   * 
+   * @return the list of sessions.
+   */
   public List<GameSession> getSessions() {
-
     return sessions;
   }
 
+  /**
+   * Getter for the initialized boolean.
+   * 
+   * @return true iff the session is initialized.
+   */
   public boolean isInitialized() {
     return initialized;
   }
 
+  /**
+   * Getter for the isStopped boolean.
+   * 
+   * @return true iff the session is stopped.
+   */
   private synchronized boolean isStopped() {
     return isStopped;
   }
 
-  /** The stop method. */
+  /**
+   * Synchronized method for stopping a session.
+   */
   private synchronized void stop() {
     isStopped = true;
     try {
@@ -233,7 +273,12 @@ public class GameHost implements Runnable {
     }
   }
 
-  /** The count players method. */
+  /**
+   * Counts the players in a session of a specific type.
+   * 
+   * @param type the type of the players counted.
+   * @return the amount of players of that type.
+   */
   public static int countUsers(PlayerType type) {
     int sum = 0;
     for (Entry<Socket, ClientInstance> entry : clientList.entrySet()) {
@@ -321,6 +366,12 @@ public class GameHost implements Runnable {
     log.info("EscapeHost", "Message sent to " + clientList.size() + " user(s)");
   }
 
+  /**
+   * Sends a message to all clients of a specific type.
+   * 
+   * @param type the type of the clients the message should be sent to.
+   * @param message the message to be sent.
+   */
   public static void sendType(PlayerType type, String message) {
     for (Entry<Socket, ClientInstance> entry : clientList.entrySet()) {
 
@@ -344,12 +395,20 @@ public class GameHost implements Runnable {
     sendType(PlayerType.MOBILE, message);
   }
 
+  /**
+   * Send a message to all connected virtual clients.
+   * 
+   * @param message
+   *          the string to be sent
+   */
   public void sendVirtual(String message) {
     sendType(PlayerType.VIRTUAL, message);
   }
 
+  /**
+   * Print the list of connected clients.
+   */
   private void printClients() {
-
     if (clientList.isEmpty()) {
       System.out.println("No clients connected.");
       return;
@@ -364,8 +423,10 @@ public class GameHost implements Runnable {
     }
   }
 
+  /**
+   * Print information about all the sessions.
+   */
   public void printSessions() {
-
     for (GameSession session : getSessions()) {
       session.printSession();
 
@@ -377,31 +438,64 @@ public class GameHost implements Runnable {
     }
   }
 
+  /**
+   * Print the status of all sessions.
+   */
   public void printStatus() {
     printClients();
     printSessions();
   }
   
+  /**
+   * Getter for the list of clients.
+   * 
+   * @return the list of clients.
+   */
   public static HashMap<Socket, ClientInstance> getClientList() {
     return clientList;
   }
 
+  /**
+   * Getter for the class name.
+   * 
+   * @return the name of this class.
+   */
   public static String getClassName() {
     return className;
   }
 
+  /**
+   * Getter for the number of the server port.
+   * 
+   * @return the server port number.
+   */
   public int getServerPort() {
     return serverPort;
   }
 
+  /**
+   * Getter for the current session id.
+   * 
+   * @return the id of the current session.
+   */
   public int getCurrentSessionId() {
     return currentSessionId;
   }
   
+  /**
+   * Getter for the isStopped boolean.
+   * 
+   * @return true iff the session is stopped.
+   */
   public boolean getStopped() {
     return isStopped;
   }
 
+  /**
+   * Checks whether two sessions are equal. 
+   * 
+   * @return true iff the sessions are equal.
+   */
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof GameHost) {

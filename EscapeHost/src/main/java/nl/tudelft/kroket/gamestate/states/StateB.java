@@ -21,23 +21,34 @@ public class StateB extends GameState {
   /** Class simpleName, used as tag for logging. */
   private final String className = this.getClass().getSimpleName();
 
+  /** Identifier of the state, used for messages. */
   private static final String STATE_NAME = "B";
 
+  /** Counter for how many players have finished the minigame. */
   private int finishedCounter = 0;
 
   private boolean inputValid = false;
 
   private static GameState instance = new StateB();
 
-  // The sequence that is send to the vr and mobile clients.
+  /** The sequence that is send to the VR and mobile clients. */
   public ArrayList<String> sequencesTotal = new ArrayList<String>();
   
+  /** The sequence that is entered by the VR player. */
   public ArrayList<String> buttonSequence = new ArrayList<String>();
 
+  /**
+   * Returns the instance of this game state.
+   * 
+   * @return the instance.
+   */
   public static GameState getInstance() {
     return instance;
   }
 
+  /**
+   * Starts the minigame belonging to this state.
+   */
   @Override
   public void start() {
     setActive(true);
@@ -56,7 +67,7 @@ public class StateB extends GameState {
   }
 
   /**
-   * Sends the input to the virtual client and changes the game state to C.
+   * Acts accordingly upon the inputs received from the clients.
    * 
    * @param input
    *          the input string received from the client
@@ -189,6 +200,4 @@ public class StateB extends GameState {
     return buttonSequence;
   }
   
- 
-
 }

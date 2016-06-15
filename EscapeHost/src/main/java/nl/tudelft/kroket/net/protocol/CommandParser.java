@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Parses the input received from the clients.
+ * 
+ * @author Team Kroket
+ */
 public class CommandParser {
 
   /** Regular expression pattern to recognize parameters in commands. */
