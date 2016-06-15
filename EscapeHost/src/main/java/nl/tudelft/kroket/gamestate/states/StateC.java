@@ -38,7 +38,9 @@ public class StateC extends GameState {
     log.info(className, "handleInput in state " + getName());
 
     if (parsedInput.get("command").equals(Protocol.COMMAND_BONUSTIME)) {
-      session.extendTime(bonustime);
+      session.bonusTime();
+    } else if (parsedInput.get("command").equals(Protocol.COMMAND_GAMEOVER)) {
+      session.endGame();
     }
     
     // make sure we received a message for the correct state

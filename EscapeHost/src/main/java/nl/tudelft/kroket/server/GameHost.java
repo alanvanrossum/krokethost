@@ -55,10 +55,7 @@ public class GameHost implements Runnable {
   }
   
   public void update() {
-    startSession();
-    
-    getCurrentSession().update();
-    
+    startSession();    
   }
 
   public GameSession getCurrentSession() {

@@ -26,5 +26,4 @@ public class Settings {
   /** Number of threads available in the pool. */
   public static final int THREAD_POOL_MAX = 10;
 
-  public static final int TIMELIMIT = 15 * 60;
 }

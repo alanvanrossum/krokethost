@@ -68,7 +68,9 @@ public class StateB extends GameState {
     log.info(className, "handleInput in state " + getName());
 
     if (parsedInput.get("command").equals(Protocol.COMMAND_BONUSTIME)) {
-      session.extendTime(bonustime);
+      session.bonusTime();
+    } else if (parsedInput.get("command").equals(Protocol.COMMAND_GAMEOVER)) {
+      session.endGame();
     }
     
     if (!parsedInput.containsKey("param_0") || !parsedInput.get("param_0").equals(getName())) {
