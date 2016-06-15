@@ -40,7 +40,7 @@ public class StateC extends GameState {
     if (parsedInput.get("command").equals(Protocol.COMMAND_BONUSTIME)) {
       session.bonusTime();
     } else if (parsedInput.get("command").equals(Protocol.COMMAND_GAMEOVER)) {
-      session.endGame();
+      session.gameOver();
     }
     
     // make sure we received a message for the correct state

@@ -100,7 +100,7 @@ public abstract class GameState {
     if (parsedInput.get("command").equals(Protocol.COMMAND_BONUSTIME)) {
       session.bonusTime();
     } else if (parsedInput.get("command").equals(Protocol.COMMAND_GAMEOVER)) {
-      session.endGame();
+      session.gameOver();
     }
     
     if (!parsedInput.containsKey("param_0") || !parsedInput.get("param_0").equals(getName())) {
