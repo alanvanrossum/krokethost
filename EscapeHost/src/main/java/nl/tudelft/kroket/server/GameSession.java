@@ -157,7 +157,7 @@ public class GameSession {
    * 
    * @param message the message to be sent.
    */
-  private void sendAll(String message) {
+  protected void sendAll(String message) {
     int sum = 0;
 
     for (Entry<Socket, ClientInstance> entry : clientList.entrySet()) {
@@ -175,6 +175,15 @@ public class GameSession {
    */
   public void stopSession() {
     active = false;
+  }
+  
+  /**
+   * Create a new session.
+   */
+  public void newSession() {
+	sessionid++;
+	host.newSession();
+	host.startSession();
   }
 
   /**
@@ -291,6 +300,7 @@ public class GameSession {
 	log.info(className, "Game over!");
 	//stopSession();
 	sendAll(String.format("%s", Protocol.COMMAND_GAMEOVER));
+	newSession();
   }
   
   /**

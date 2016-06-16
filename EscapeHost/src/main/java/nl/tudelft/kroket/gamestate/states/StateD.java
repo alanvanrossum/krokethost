@@ -50,6 +50,7 @@ public class StateD extends GameState {
 
       // End the game
       host.sendAll(Protocol.COMMAND_GAMEWON);
+      session.newSession();
     }
 
 }
