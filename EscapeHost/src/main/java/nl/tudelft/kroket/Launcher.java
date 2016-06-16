@@ -6,6 +6,7 @@ import nl.tudelft.kroket.server.Settings;
 
 /**
  * Launches the host.
+ * 
  * @author Team Kroket
  */
 public class Launcher {
@@ -18,7 +19,9 @@ public class Launcher {
 
   /**
    * Main method that runs the launcher.
-   * @param args standard - not used.
+   * 
+   * @param args
+   *          standard - not used.
    */
   public static void main(String[] args) {
 
@@ -48,7 +51,7 @@ public class Launcher {
       if (server.isInitialized()) {
         break;
       }
-      
+
       if ((tickCounter % Settings.INTERVAL_REPORT_STATUS) == 0) {
         log.info(className, "Server not ready. Is the port in use?");
       }
@@ -71,7 +74,7 @@ public class Launcher {
       }
       tickCounter += 1;
 
-    // System.out.println("tickCounter = " + tickCounter);
+      // System.out.println("tickCounter = " + tickCounter);
     }
     log.info(className, "Exiting...");
   }

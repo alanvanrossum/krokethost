@@ -15,6 +15,7 @@ import nl.tudelft.kroket.user.User.PlayerType;
 
 /**
  * Class that handles the current game session.
+ * 
  * @author Team Kroket
  */
 public class GameSession {
@@ -33,7 +34,7 @@ public class GameSession {
 
   /** List with all connected clients. */
   private HashMap<Socket, ClientInstance> clientList;
-  
+
   /** The session identifier. */
   private int sessionid;
 
@@ -46,8 +47,10 @@ public class GameSession {
   /**
    * Constructor for GameSession.
    * 
-   * @param host the host of the session.
-   * @param id the id of the session.
+   * @param host
+   *          the host of the session.
+   * @param id
+   *          the id of the session.
    */
   public GameSession(GameHost host, int id) {
     this.host = host;
@@ -100,7 +103,9 @@ public class GameSession {
 
   /**
    * Counts the amount of connected clients of a type.
-   * @param type the type that is checked.
+   * 
+   * @param type
+   *          the type that is checked.
    * @return the sum of connected clients of that type.
    */
   public int countUsers(PlayerType type) {
@@ -117,8 +122,10 @@ public class GameSession {
   /**
    * Send a message to a specific type of client.
    * 
-   * @param type the type of the client.
-   * @param message the message to be sent.
+   * @param type
+   *          the type of the client.
+   * @param message
+   *          the message to be sent.
    */
   public void sendType(PlayerType type, String message) {
     for (Entry<Socket, ClientInstance> entry : clientList.entrySet()) {
@@ -134,7 +141,8 @@ public class GameSession {
   /**
    * Sends a message to only the mobile clients.
    * 
-   * @param message the message to be sent.
+   * @param message
+   *          the message to be sent.
    */
   public void sendMobile(String message) {
     sendType(PlayerType.MOBILE, message);
@@ -144,7 +152,8 @@ public class GameSession {
   /**
    * Sends a message to only the virtual client.
    * 
-   * @param message the message to be sent.
+   * @param message
+   *          the message to be sent.
    */
   public void sendVirtual(String message) {
     sendType(PlayerType.VIRTUAL, message);
@@ -154,7 +163,8 @@ public class GameSession {
   /**
    * Sends a message to all connected clients.
    * 
-   * @param message the message to be sent.
+   * @param message
+   *          the message to be sent.
    */
   private void sendAll(String message) {
     int sum = 0;
@@ -179,7 +189,8 @@ public class GameSession {
   /**
    * Setter for the gamestate.
    * 
-   * @param newState the state to be set.
+   * @param newState
+   *          the state to be set.
    */
   public void setState(GameState newState) {
     log.info(className, "Setting GameState to " + newState.getClass().getSimpleName());
@@ -190,8 +201,10 @@ public class GameSession {
   /**
    * Switch between states.
    * 
-   * @param oldState state you are currently in.
-   * @param newState state you want to switch to.
+   * @param oldState
+   *          state you are currently in.
+   * @param newState
+   *          state you want to switch to.
    */
   private void switchState(GameState oldState, GameState newState) {
     if (oldState == newState) {
@@ -243,8 +256,10 @@ public class GameSession {
   /**
    * Add a client to the clientlist.
    * 
-   * @param socket the socket that should be added.
-   * @param client the clientinstance that belongs to the socket.
+   * @param socket
+   *          the socket that should be added.
+   * @param client
+   *          the clientinstance that belongs to the socket.
    */
   public void addClient(Socket socket, ClientInstance client) {
     clientList.put(socket, client);
@@ -253,7 +268,8 @@ public class GameSession {
   /**
    * Remove a client from the clientlist.
    * 
-   * @param socket the socket that should be removed.
+   * @param socket
+   *          the socket that should be removed.
    */
   public void removeClient(Socket socket) {
     if (clientList.containsKey(socket))
@@ -263,8 +279,10 @@ public class GameSession {
   /**
    * Handle input from the clients.
    * 
-   * @param input the input received.
-   * @param parsedInput the parsed input.
+   * @param input
+   *          the input received.
+   * @param parsedInput
+   *          the parsed input.
    */
   public void handleMessage(String input, HashMap<String, String> parsedInput) {
     log.debug(className, "handleMessage: " + input);
@@ -275,25 +293,26 @@ public class GameSession {
       currentState.handleInput(input, parsedInput);
     }
   }
-  
+
   /**
    * Forwards to all players that bonus time should be received.
    */
   public void bonusTime() {
-	sendAll(String.format("%s", Protocol.COMMAND_BONUSTIME));
+    sendAll(String.format("%s", Protocol.COMMAND_BONUSTIME));
   }
-  
+
   /**
    * Sends the gameover message to all clients.
    */
   public void gameOver() {
-	log.info(className, "Game over!");
-	//stopSession();
-	sendAll(String.format("%s", Protocol.COMMAND_GAMEOVER));
+    log.info(className, "Game over!");
+    // stopSession();
+    sendAll(String.format("%s", Protocol.COMMAND_GAMEOVER));
   }
-  
+
   /**
    * Gets the current state.
+   * 
    * @return a GameState object that is the current state
    */
   public GameState getCurrentState() {
@@ -302,12 +321,11 @@ public class GameSession {
 
   /**
    * gets the clientList.
+   * 
    * @return the hashmap with sockets and clientinstances
    */
   public HashMap<Socket, ClientInstance> getClientList() {
     return clientList;
   }
-  
-  
 
 }
