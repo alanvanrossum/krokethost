@@ -74,8 +74,8 @@ public class Launcher {
       }
       tickCounter += 1;
 
-      // System.out.println("tickCounter = " + tickCounter);
     }
     log.info(className, "Exiting...");
   }
+  
 }

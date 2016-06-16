@@ -22,17 +22,31 @@ public class StateC extends GameState {
 
   private Random random = new Random();
 
+  /** Identifier of the state, used for messages. */
   private static final String STATE_NAME = "C";
 
   private static GameState instance = new StateC();
 
+  /** The lenght of the color sequence. */
+  private int sequenceLength = 7;
+  
+  /**
+   * Returns the instance of this game state.
+   * 
+   * @return the instance.
+   */
   public static GameState getInstance() {
     return instance;
   }
 
-  // The length of the color sequence.
-  private int sequenceLength = 7;
-
+  /**
+   * Acts accordingly upon the inputs received from the clients.
+   * 
+   * @param input
+   *          the input string received from the client
+   * @param parsedInput
+   *          the parsed input
+   */
   @Override
   public void handleInput(String input, HashMap<String, String> parsedInput) {
     log.info(className, "handleInput in state " + getName());
@@ -126,6 +140,9 @@ public class StateC extends GameState {
     return res.toString();
   }
 
+  /**
+   * Return the identifier for this state.
+   */
   @Override
   public String getName() {
     return STATE_NAME;

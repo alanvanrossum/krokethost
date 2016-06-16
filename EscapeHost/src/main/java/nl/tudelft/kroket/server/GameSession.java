@@ -327,5 +327,4 @@ public class GameSession {
   public HashMap<Socket, ClientInstance> getClientList() {
     return clientList;
   }
-
 }

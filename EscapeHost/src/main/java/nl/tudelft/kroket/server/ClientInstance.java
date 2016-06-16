@@ -19,7 +19,6 @@ import nl.tudelft.kroket.user.User.PlayerType;
  * ConnectionThread object to handle interaction with a client.
  * 
  * @author Team Kroket
- *
  */
 public class ClientInstance implements Runnable {
 
@@ -29,9 +28,8 @@ public class ClientInstance implements Runnable {
   /** Class simpleName, used as tag for logging. */
   private final String className = this.getClass().getSimpleName();
 
+  /** The CRLF String. */
   private static final String CRLF = "\r\n";
-
-  // private EscapeHost HOST = EscapeHost.getInstance();
 
   /** Client's DataInputStream. */
   DataInputStream inputStream = null;
@@ -75,10 +73,20 @@ public class ClientInstance implements Runnable {
     this.user = new User(clientSocket, outputStream);
   }
 
+  /**
+   * Getter for the user.
+   * 
+   * @return the user.
+   */
   public User getUser() {
     return user;
   }
 
+  /**
+   * Sets the type of a player.
+   * 
+   * @param typeString the type to be set.
+   */
   private void setPlayerType(String typeString) {
 
     if (user == null) {
@@ -116,6 +124,11 @@ public class ClientInstance implements Runnable {
       }
   }
 
+  /**
+   * Checks whether the user is registered.
+   * 
+   * @return true iff the player is registered.
+   */
   public boolean isRegistered() {
     return user instanceof RegisteredUser;
   }
@@ -159,14 +172,6 @@ public class ClientInstance implements Runnable {
         }
       }
       break;
-    //
-    // case Protocol.COMMAND_INIT_VR:
-    // case Protocol.COMMAND_INIT_MOBILE:
-    // // GameState.getInstance().handleMessage(input, parsedInput);
-    //
-    // host.getCurrentSession().handleMessage(input, parsedInput);
-    //
-    // break;
 
     case Protocol.COMMAND_ADMIN:
       if (input.length() > Protocol.COMMAND_ADMIN.length() + 1) {
@@ -221,6 +226,9 @@ public class ClientInstance implements Runnable {
 
   }
 
+  /**
+   * To string method for printing a client.
+   */
   public String toString() {
     String result = String.format("CLIENT [%s]: %s", clientSocket.getRemoteSocketAddress()
         .toString(), user.toString());
@@ -268,6 +276,11 @@ public class ClientInstance implements Runnable {
     }
   }
 
+  /**
+   * Checks whether a client instance if connected.
+   * 
+   * @return true iff the instance is connected.
+   */
   public boolean isConnected() {
     return clientSocket.isConnected() && !clientSocket.isClosed();
   }
