@@ -18,6 +18,7 @@ public class StateA extends GameState {
   /** Class simpleName, used as tag for logging. */
   private final String className = this.getClass().getSimpleName();
 
+  /** Identifier of the state, used for messages. */
   private static final String STATE_NAME = "A";
 
   private static GameState instance = new StateA();

@@ -13,6 +13,7 @@ public class StateD extends GameState {
     /** Singleton reference to logger. */
     static final Logger log = Logger.getInstance();
 
+    /** Identifier of the state, used for messages. */
     private static final String STATE_NAME = "D";
     
     /** Class simpleName, used as tag for logging. */
@@ -49,7 +50,6 @@ public class StateD extends GameState {
 
       // End the game
       host.sendAll(Protocol.COMMAND_GAMEWON);
-      //session.setGameEnded(true);
     }
 
 }

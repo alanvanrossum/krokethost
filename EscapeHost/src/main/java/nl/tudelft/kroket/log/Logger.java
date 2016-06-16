@@ -7,7 +7,6 @@ import java.util.Date;
  * Logger class.
  * 
  * @author Team Kroket
- *
  */
 public final class Logger {
 

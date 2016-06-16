@@ -15,10 +15,16 @@ public class StateFinal extends GameState {
   /** Class simpleName, used as tag for logging. */
   private final String className = this.getClass().getSimpleName();
   
+  /** Identifier of the state, used for messages. */
   private static final String STATE_NAME = "FINAL";
 
   private static GameState instance = new StateFinal();
 
+  /**
+   * Getter for the instance.
+   * 
+   * @return the instance.
+   */
   public static GameState getInstance() {
     return instance;
   }
@@ -32,6 +38,9 @@ public class StateFinal extends GameState {
     setActive(true);
   }
 
+  /**
+   * Return the name of the state. 
+   */
   @Override
   public String getName() {
     return STATE_NAME;

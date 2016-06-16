@@ -4,7 +4,6 @@ package nl.tudelft.kroket.server;
  * Settings for EscapeServer. This class simply contains all settings used to control the server.
  * 
  * @author Team Kroket
- *
  */
 public class Settings {
 

@@ -8,14 +8,13 @@ import java.net.Socket;
  * Player object for EscapeServer.
  * 
  * @author Team Kroket
- *
  */
 public class User {
 
   /** The CRLF String. */
   private static final String CRLF = "\r\n"; // newline
 
-  /** the PlayerTypes. */
+  /** The PlayerTypes. */
   public enum PlayerType {
     NONE, VIRTUAL, MOBILE, ADMIN
   }
@@ -127,7 +126,7 @@ public class User {
       return;
     }
 
-    // append CRLF if string doesn't end with one
+    // Append CRLF if string doesn't end with one.
     if (!message.endsWith(CRLF)) {
       message += CRLF;
     }
@@ -140,6 +139,10 @@ public class User {
     }
   }
 
+  /**
+   * Get the name of the user.
+   * @return if defined, the name of the user, else not registered.
+   */
   public String getName() {
     return "not registered";
   }
