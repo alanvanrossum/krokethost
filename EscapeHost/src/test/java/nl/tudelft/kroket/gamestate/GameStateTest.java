@@ -12,12 +12,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-
 import java.util.HashMap;
 
-
 public class GameStateTest {
-  
+
   GameState gameState;
   GameState stateSpy;
   GameHost host;
@@ -26,7 +24,9 @@ public class GameStateTest {
 
   /**
    * Sets up objects for the test methods.
-   * @throws Exception exception
+   * 
+   * @throws Exception
+   *           exception
    */
   @Before
   public void setUp() throws Exception {
@@ -39,7 +39,9 @@ public class GameStateTest {
 
   /**
    * Cleans up after methods.
-   * @throws Exception exception
+   * 
+   * @throws Exception
+   *           exception
    */
   @After
   public void tearDown() throws Exception {
@@ -132,7 +134,7 @@ public class GameStateTest {
     gameState.handleInput(input, parsedInput);
     Mockito.verify(host, Mockito.never()).sendAll(Mockito.anyString());
   }
-  
+
   /**
    * Test for handleInput method, with BEGIN message.
    */
@@ -146,9 +148,9 @@ public class GameStateTest {
     parsedInput.put("command", "BEGIN");
     gameState.handleInput(input, parsedInput);
     Mockito.verify(host).sendAll(Mockito.anyString());
-    //Mockito.verify(stateSpy).start();
+    // Mockito.verify(stateSpy).start();
   }
-  
+
   /**
    * Test for handleInput method, with DONE message.
    */
@@ -163,9 +165,9 @@ public class GameStateTest {
     parsedInput.put("command", "DONE");
     gameState.handleInput(input, parsedInput);
     Mockito.verify(host, Mockito.atLeastOnce()).sendAll(Mockito.anyString());
-    //Mockito.verify(stateSpy).stop();
+    // Mockito.verify(stateSpy).stop();
   }
-  
+
   /**
    * Test for handleInput method with invalid command.
    */
@@ -181,7 +183,7 @@ public class GameStateTest {
     gameState.handleInput(input, parsedInput);
     Mockito.verify(host, Mockito.never()).sendAll(Mockito.anyString());
   }
-  
+
   /**
    * Test for handleInput method with invalid command and active = false.
    */
