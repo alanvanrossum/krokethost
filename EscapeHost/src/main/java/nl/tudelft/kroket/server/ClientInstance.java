@@ -178,6 +178,7 @@ public class ClientInstance implements Runnable {
     case Protocol.COMMAND_VERIFY:
     case Protocol.COMMAND_RESTART:
     case Protocol.COMMAND_BONUSTIME:
+    case Protocol.COMMAND_GAMEOVER:
       host.getCurrentSession().handleMessage(input, parsedInput);
       break;
 
