@@ -63,6 +63,17 @@ public class GameSession {
     stateOrder.add(2, StateC.getInstance());
     stateOrder.add(3, StateD.getInstance());
     stateOrder.add(4, StateFinal.getInstance());
+    
+    resetStates();
+  }
+  
+  /**
+   * Creates new states for the new session.
+   */
+  private void resetStates() {
+	for (GameState state : stateOrder) {
+		state.newState();
+	}
   }
 
   /**

@@ -38,6 +38,13 @@ public class StateC extends GameState {
   public static GameState getInstance() {
     return instance;
   }
+  
+  /**
+   * Creates a new State C.
+   */
+  public void newState() {
+	  instance = new StateC();
+  }
 
   /**
    * Acts accordingly upon the inputs received from the clients.

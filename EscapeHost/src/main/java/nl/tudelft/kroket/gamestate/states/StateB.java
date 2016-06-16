@@ -45,6 +45,13 @@ public class StateB extends GameState {
   public static GameState getInstance() {
     return instance;
   }
+  
+  /**
+   * Creates a new State B.
+   */
+  public void newState() {
+	  instance = new StateB();
+  }
 
   /**
    * Starts the minigame belonging to this state.

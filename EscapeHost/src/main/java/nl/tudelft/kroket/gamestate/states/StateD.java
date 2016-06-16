@@ -30,6 +30,13 @@ public class StateD extends GameState {
     public static GameState getInstance() {
         return instance;
     }
+    
+    /**
+     * Creates a new State D.
+     */
+    public void newState() {
+  	  instance = new StateD();
+    }
 
     /**
      * Return the name of the state. 

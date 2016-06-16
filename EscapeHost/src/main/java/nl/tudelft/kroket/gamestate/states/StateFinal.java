@@ -29,6 +29,13 @@ public class StateFinal extends GameState {
     return instance;
   }
   
+  /**
+   * Creates a new State Final.
+   */
+  public void newState() {
+	  instance = new StateFinal();
+  }
+  
    /**
    * Start a state.
    */

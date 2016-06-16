@@ -128,5 +128,6 @@ public abstract class GameState {
     return session;
   }
   
+  public abstract void newState();  
 
 }
