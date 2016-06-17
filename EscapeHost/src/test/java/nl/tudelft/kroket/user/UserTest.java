@@ -18,7 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import nl.tudelft.kroket.gamestate.states.StateD;
+import nl.tudelft.kroket.gamestate.states.GameStateD;
 import nl.tudelft.kroket.user.User.PlayerType;
 
 /**

@@ -18,7 +18,7 @@ public class StateFinalTest {
    */
   @Test
   public void testgetInstance() {
-    assertNotNull(StateFinal.getInstance());
+    assertNotNull(GameStateFinal.getInstance());
   }
   
   
@@ -27,7 +27,7 @@ public class StateFinalTest {
    */
   @Test
   public void testGetName() {
-    assertEquals(StateFinal.getInstance().getName(), "FINAL");
+    assertEquals(GameStateFinal.getInstance().getName(), "FINAL");
   }
 
 

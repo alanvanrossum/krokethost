@@ -2,9 +2,9 @@ package nl.tudelft.kroket.gamestate;
 
 import static org.junit.Assert.*;
 
-import nl.tudelft.kroket.gamestate.states.StateA;
-import nl.tudelft.kroket.gamestate.states.StateB;
-import nl.tudelft.kroket.gamestate.states.StateD;
+import nl.tudelft.kroket.gamestate.states.GameStateA;
+import nl.tudelft.kroket.gamestate.states.GameStateB;
+import nl.tudelft.kroket.gamestate.states.GameStateD;
 import nl.tudelft.kroket.server.GameHost;
 import nl.tudelft.kroket.server.GameSession;
 import org.junit.After;
@@ -31,8 +31,8 @@ public class GameStateTest {
   @Before
   public void setUp() throws Exception {
     parsedInput = new HashMap<>();
-    gameState = new StateA();
-    stateSpy = Mockito.spy(StateA.getInstance());
+    gameState = new GameStateA();
+    stateSpy = Mockito.spy(GameStateA.getInstance());
     host = Mockito.mock(GameHost.class);
     gs = Mockito.mock(GameSession.class);
   }
@@ -80,7 +80,7 @@ public class GameStateTest {
    */
   @Test
   public void testStop() {
-    gameState = new StateB();
+    gameState = new GameStateB();
     gameState.setHost(host);
     gameState.setSession(gs);
     gameState.start();
@@ -122,7 +122,7 @@ public class GameStateTest {
    */
   @Test
   public void testInvalidHandleInput() {
-    gameState = new StateD();
+    gameState = new GameStateD();
     gameState.setHost(host);
     String input = "test";
     parsedInput.put("param_1", "B");
@@ -140,7 +140,7 @@ public class GameStateTest {
    */
   @Test
   public void testBeginHandleInput() {
-    gameState = new StateD();
+    gameState = new GameStateD();
     gameState.setHost(host);
     gameState.setSession(gs);
     String input = "BEGIN[D]";
@@ -156,7 +156,7 @@ public class GameStateTest {
    */
   @Test
   public void testDoneHandleInput() {
-    gameState = new StateD();
+    gameState = new GameStateD();
     gameState.setHost(host);
     gameState.setSession(gs);
     gameState.setActive(true);
@@ -173,7 +173,7 @@ public class GameStateTest {
    */
   @Test
   public void tesIgnoreHandleInput() {
-    gameState = new StateD();
+    gameState = new GameStateD();
     gameState.setHost(host);
     gameState.setSession(gs);
     gameState.setActive(true);
@@ -189,7 +189,7 @@ public class GameStateTest {
    */
   @Test
   public void tesIgnoreHandleInputFalse() {
-    gameState = new StateD();
+    gameState = new GameStateD();
     gameState.setHost(host);
     gameState.setSession(gs);
     gameState.setActive(false);

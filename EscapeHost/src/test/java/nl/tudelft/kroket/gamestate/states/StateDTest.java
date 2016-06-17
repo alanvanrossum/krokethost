@@ -17,7 +17,7 @@ public class StateDTest {
    */
   @Test
   public void testgetInstance() {
-    assertNotNull(StateD.getInstance());
+    assertNotNull(GameStateD.getInstance());
   }
   
   
@@ -26,6 +26,6 @@ public class StateDTest {
    */
   @Test
   public void testGetName() {
-    assertEquals(StateD.getInstance().getName(), "D");
+    assertEquals(GameStateD.getInstance().getName(), "D");
   }
 }

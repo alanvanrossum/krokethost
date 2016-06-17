@@ -12,7 +12,7 @@ import nl.tudelft.kroket.net.protocol.Protocol;
  * This is the third game state. In this game state minigame C can be started and ended. The game
  * can progress to state D.
  */
-public class StateC extends GameState {
+public class GameStateC extends GameState {
 
   /** Singleton reference to logger. */
   static final Logger log = Logger.getInstance();
@@ -25,7 +25,7 @@ public class StateC extends GameState {
   /** Identifier of the state, used for messages. */
   private static final String STATE_NAME = "C";
 
-  private static GameState instance = new StateC();
+  private static GameState instance = new GameStateC();
 
   /** The lenght of the color sequence. */
   private int sequenceLength = 7;
@@ -43,7 +43,7 @@ public class StateC extends GameState {
    * Creates a new State C.
    */
   public void newState() {
-	  instance = new StateC();
+	  instance = new GameStateC();
   }
 
   /**

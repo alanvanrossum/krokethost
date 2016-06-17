@@ -10,7 +10,7 @@ import nl.tudelft.kroket.net.protocol.Protocol;
  * This is the first game state. In this game state minigame A can be started and ended. The game
  * can progress to state B.
  */
-public class StateA extends GameState {
+public class GameStateA extends GameState {
 
   /** Singleton reference to logger. */
   static final Logger log = Logger.getInstance();
@@ -21,7 +21,7 @@ public class StateA extends GameState {
   /** Identifier of the state, used for messages. */
   private static final String STATE_NAME = "A";
 
-  private static GameState instance = new StateA();
+  private static GameState instance = new GameStateA();
 
   /**
    * Getter for the instance.
@@ -36,7 +36,7 @@ public class StateA extends GameState {
    * Creates a new State A.
    */
   public void newState() {
-	  instance = new StateA();
+	  instance = new GameStateA();
   }
 
   /**
