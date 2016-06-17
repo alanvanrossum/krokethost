@@ -20,8 +20,8 @@ import java.util.HashMap;
  */
 public class StateATest {  
   
-  StateA gameState;
-  StateA stateSpy;
+  GameStateA gameState;
+  GameStateA stateSpy;
   GameHost host;
   GameSession gs;
   private HashMap<String, String> parsedInput;
@@ -33,7 +33,7 @@ public class StateATest {
   @Before
   public void setUp() throws Exception {
     parsedInput = new HashMap<>();
-    gameState = new StateA();
+    gameState = new GameStateA();
     stateSpy = Mockito.spy(gameState);
     host = Mockito.mock(GameHost.class);
     gs = Mockito.mock(GameSession.class);
@@ -55,7 +55,7 @@ public class StateATest {
    */
   @Test
   public void testGetInstance() {
-    assertNotNull(StateA.getInstance());
+    assertNotNull(GameStateA.getInstance());
   }
   
   /**

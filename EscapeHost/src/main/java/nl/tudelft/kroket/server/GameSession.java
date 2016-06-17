@@ -60,22 +60,22 @@ public class GameSession {
 
     this.active = false;
 
-    stateOrder.add(0, StateA.getInstance());
-    stateOrder.add(1, StateB.getInstance());
-    stateOrder.add(2, StateC.getInstance());
-    stateOrder.add(3, StateD.getInstance());
-    stateOrder.add(4, StateFinal.getInstance());
-    
+    stateOrder.add(0, GameStateA.getInstance());
+    stateOrder.add(1, GameStateB.getInstance());
+    stateOrder.add(2, GameStateC.getInstance());
+    stateOrder.add(3, GameStateD.getInstance());
+    stateOrder.add(4, GameStateFinal.getInstance());
+
     resetStates();
   }
-  
+
   /**
    * Creates new states for the new session.
    */
   private void resetStates() {
-	for (GameState state : stateOrder) {
-		state.newState();
-	}
+    for (GameState state : stateOrder) {
+      state.newState();
+    }
   }
 
   /**
@@ -196,14 +196,14 @@ public class GameSession {
   public void stopSession() {
     active = false;
   }
-  
+
   /**
    * Create a new session.
    */
   public void newSession() {
-	sessionid++;
-	host.newSession();
-	host.startSession();
+    sessionid++;
+    host.newSession();
+    //host.update();
   }
 
   /**
@@ -325,10 +325,10 @@ public class GameSession {
    * Sends the gameover message to all clients.
    */
   public void gameOver() {
-	log.info(className, "Game over!");
-	//stopSession();
-	sendAll(String.format("%s", Protocol.COMMAND_GAMEOVER));
-	newSession();
+    log.info(className, "Game over!");
+    // stopSession();
+    sendAll(String.format("%s", Protocol.COMMAND_GAMEOVER));
+    newSession();
   }
 
   /**

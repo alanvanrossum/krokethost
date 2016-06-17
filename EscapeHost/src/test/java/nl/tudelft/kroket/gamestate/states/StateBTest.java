@@ -2,7 +2,7 @@ package nl.tudelft.kroket.gamestate.states;
 
 import static org.junit.Assert.*;
 
-import nl.tudelft.kroket.gamestate.states.StateB;
+import nl.tudelft.kroket.gamestate.states.GameStateB;
 import nl.tudelft.kroket.server.GameHost;
 import nl.tudelft.kroket.server.GameSession;
 
@@ -21,8 +21,8 @@ import java.util.HashMap;
  */
 public class StateBTest {
 
-  StateB gameState;
-  StateB stateSpy;
+  GameStateB gameState;
+  GameStateB stateSpy;
   GameHost host;
   GameSession gs;
   private HashMap<String, String> parsedInput;
@@ -34,7 +34,7 @@ public class StateBTest {
   @Before
   public void setUp() throws Exception {
     parsedInput = new HashMap<>();
-    gameState = new StateB();
+    gameState = new GameStateB();
     stateSpy = Mockito.spy(gameState);
     host = Mockito.mock(GameHost.class);
     gs = Mockito.mock(GameSession.class);
@@ -57,7 +57,7 @@ public class StateBTest {
    */
   @Test
   public void testGetInstance() {
-    assertNotNull(StateB.getInstance());
+    assertNotNull(GameStateB.getInstance());
   }
    
   /**

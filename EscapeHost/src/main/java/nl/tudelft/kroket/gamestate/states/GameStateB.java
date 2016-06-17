@@ -13,7 +13,7 @@ import nl.tudelft.kroket.server.Settings;
  * This is the second game state. In this game state minigame B can be started and ended. The game
  * can progress to state C.
  */
-public class StateB extends GameState {
+public class GameStateB extends GameState {
 
   /** Singleton reference to logger. */
   static final Logger log = Logger.getInstance();
@@ -29,7 +29,7 @@ public class StateB extends GameState {
 
   private boolean inputValid = false;
 
-  private static GameState instance = new StateB();
+  private static GameState instance = new GameStateB();
 
   /** The sequence that is send to the VR and mobile clients. */
   public ArrayList<String> sequencesTotal = new ArrayList<String>();
@@ -50,7 +50,7 @@ public class StateB extends GameState {
    * Creates a new State B.
    */
   public void newState() {
-	  instance = new StateB();
+	  instance = new GameStateB();
   }
 
   /**
