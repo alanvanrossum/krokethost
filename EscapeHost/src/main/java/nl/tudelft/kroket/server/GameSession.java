@@ -65,6 +65,17 @@ public class GameSession {
     stateOrder.add(2, StateC.getInstance());
     stateOrder.add(3, StateD.getInstance());
     stateOrder.add(4, StateFinal.getInstance());
+    
+    resetStates();
+  }
+  
+  /**
+   * Creates new states for the new session.
+   */
+  private void resetStates() {
+	for (GameState state : stateOrder) {
+		state.newState();
+	}
   }
 
   /**
@@ -166,7 +177,7 @@ public class GameSession {
    * @param message
    *          the message to be sent.
    */
-  private void sendAll(String message) {
+  protected void sendAll(String message) {
     int sum = 0;
 
     for (Entry<Socket, ClientInstance> entry : clientList.entrySet()) {
@@ -184,6 +195,15 @@ public class GameSession {
    */
   public void stopSession() {
     active = false;
+  }
+  
+  /**
+   * Create a new session.
+   */
+  public void newSession() {
+	sessionid++;
+	host.newSession();
+	host.startSession();
   }
 
   /**
@@ -305,9 +325,10 @@ public class GameSession {
    * Sends the gameover message to all clients.
    */
   public void gameOver() {
-    log.info(className, "Game over!");
-    // stopSession();
-    sendAll(String.format("%s", Protocol.COMMAND_GAMEOVER));
+	log.info(className, "Game over!");
+	//stopSession();
+	sendAll(String.format("%s", Protocol.COMMAND_GAMEOVER));
+	newSession();
   }
 
   /**

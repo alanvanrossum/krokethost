@@ -134,7 +134,6 @@ public class GameHost implements Runnable {
       try {
         Thread.sleep(Settings.INTERVAL_SOCKET_RETRY * 1000);
       } catch (InterruptedException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
       }
 
@@ -207,7 +206,7 @@ public class GameHost implements Runnable {
     GameSession session = getCurrentSession();
 
     if (!session.isReady()) {
-      // System.out.println("Cannot start session: not ready");
+      log.info(className, "Cannot start session: not ready");
     } else if (!session.isActive()) {
 
       System.out.println("Starting current session...");
@@ -219,19 +218,25 @@ public class GameHost implements Runnable {
 
   }
 
-  /**
-   * Stops the current game session.
-   */
-  public void stopSession() {
-    GameSession session = getCurrentSession();
-
-    if (session.isActive()) {
-      session.stopSession();
-
-      currentSessionId += 1;
-
-      sessions.add(currentSessionId, new GameSession(this, currentSessionId));
-    }
+//  /**
+//   * Stops the current game session.
+//   */
+//  public void stopSession() {
+//    GameSession session = getCurrentSession();
+//
+//    if (session.isActive()) {
+//      session.stopSession();
+//
+//      currentSessionId += 1;
+//
+//      sessions.add(currentSessionId, new GameSession(this, currentSessionId));
+//    }
+//  }
+  
+  public void newSession() {
+	currentSessionId++;
+	sessions.add(currentSessionId, new GameSession(this, currentSessionId));
+	getCurrentSession().getCurrentState().setSession(getCurrentSession());
   }
 
   /**
@@ -356,14 +361,8 @@ public class GameHost implements Runnable {
    * @return
    */
   public void sendAll(String message) {
-    for (Entry<Socket, ClientInstance> entry : clientList.entrySet()) {
-
-      if (entry.getValue() != null) {
-        entry.getValue().sendMessage(message);
-      }
-    }
-    log.info("EscapeHost", "Sending message: " + message);
-    log.info("EscapeHost", "Message sent to " + clientList.size() + " user(s)");
+	log.info("EscapeHost", "Message sent to " + clientList.size() + " user(s)");
+	getCurrentSession().sendAll(message);
   }
 
   /**
@@ -372,17 +371,8 @@ public class GameHost implements Runnable {
    * @param type the type of the clients the message should be sent to.
    * @param message the message to be sent.
    */
-  public static void sendType(PlayerType type, String message) {
-    for (Entry<Socket, ClientInstance> entry : clientList.entrySet()) {
-
-      User user = entry.getValue().getUser();
-
-      if (user.getType() == type) {
-        entry.getValue().sendMessage(message);
-      }
-    }
-    log.info("EscapeHost", "Sending message: " + message);
-    log.info("EscapeHost", "Message sent to type: " + type.toString());
+  public void sendType(PlayerType type, String message) {
+	getCurrentSession().sendType(type, message);
   }
 
   /**
