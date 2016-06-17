@@ -7,7 +7,7 @@ import nl.tudelft.kroket.net.protocol.Protocol;
 /**
  * This is the final game state. In this state the game is won.
  */
-public class StateFinal extends GameState {
+public class GameStateFinal extends GameState {
 
   /** Singleton reference to logger. */
   static final Logger log = Logger.getInstance();
@@ -15,12 +15,25 @@ public class StateFinal extends GameState {
   /** Class simpleName, used as tag for logging. */
   private final String className = this.getClass().getSimpleName();
   
+  /** Identifier of the state, used for messages. */
   private static final String STATE_NAME = "FINAL";
 
-  private static GameState instance = new StateFinal();
+  private static GameState instance = new GameStateFinal();
 
+  /**
+   * Getter for the instance.
+   * 
+   * @return the instance.
+   */
   public static GameState getInstance() {
     return instance;
+  }
+  
+  /**
+   * Creates a new State Final.
+   */
+  public void newState() {
+	  instance = new GameStateFinal();
   }
   
    /**
@@ -32,6 +45,9 @@ public class StateFinal extends GameState {
     setActive(true);
   }
 
+  /**
+   * Return the name of the state. 
+   */
   @Override
   public String getName() {
     return STATE_NAME;

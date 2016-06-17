@@ -20,8 +20,8 @@ import java.util.HashMap;
  */
 public class StateATest {  
   
-  StateA gameState;
-  StateA stateSpy;
+  GameStateA gameState;
+  GameStateA stateSpy;
   GameHost host;
   GameSession gs;
   private HashMap<String, String> parsedInput;
@@ -33,7 +33,7 @@ public class StateATest {
   @Before
   public void setUp() throws Exception {
     parsedInput = new HashMap<>();
-    gameState = new StateA();
+    gameState = new GameStateA();
     stateSpy = Mockito.spy(gameState);
     host = Mockito.mock(GameHost.class);
     gs = Mockito.mock(GameSession.class);
@@ -55,7 +55,7 @@ public class StateATest {
    */
   @Test
   public void testGetInstance() {
-    assertNotNull(StateA.getInstance());
+    assertNotNull(GameStateA.getInstance());
   }
   
   /**
@@ -73,6 +73,7 @@ public class StateATest {
   public void testInvalidHandleInput() {
     String input = "test";
     parsedInput.put("param_5", "A");
+    parsedInput.put("command", "test");
     gameState.handleInput(input, parsedInput);
     Mockito.verify(host, Mockito.never()).sendAll(Mockito.anyString());
     parsedInput.remove("param_5");

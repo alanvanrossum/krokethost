@@ -1,7 +1,11 @@
 package nl.tudelft.kroket.net.protocol;
 
+/**
+ * This class defines the protocol for sending messages to the clients.
+ * 
+ * @author Team Kroket
+ */
 public class Protocol {
-
   public static final String COMMAND_REGISTER = "REGISTER";
   public static final String COMMAND_TYPE = "TYPE";
   public static final String COMMAND_ADMIN = "admin";
@@ -13,5 +17,5 @@ public class Protocol {
   public static final String COMMAND_TIMELIMIT = "TIMELIMIT";
   public static final String COMMAND_GAMEOVER = "GAMEOVER";
   public static final String COMMAND_GAMEWON = "GAMEWON";
-
+  public static final String COMMAND_BONUSTIME = "BONUSTIME";
 }

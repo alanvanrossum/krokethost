@@ -2,9 +2,9 @@ package nl.tudelft.kroket.gamestate;
 
 import static org.junit.Assert.*;
 
-import nl.tudelft.kroket.gamestate.states.StateA;
-import nl.tudelft.kroket.gamestate.states.StateB;
-import nl.tudelft.kroket.gamestate.states.StateD;
+import nl.tudelft.kroket.gamestate.states.GameStateA;
+import nl.tudelft.kroket.gamestate.states.GameStateB;
+import nl.tudelft.kroket.gamestate.states.GameStateD;
 import nl.tudelft.kroket.server.GameHost;
 import nl.tudelft.kroket.server.GameSession;
 import org.junit.After;
@@ -12,12 +12,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-
 import java.util.HashMap;
 
-
 public class GameStateTest {
-  
+
   GameState gameState;
   GameState stateSpy;
   GameHost host;
@@ -26,20 +24,24 @@ public class GameStateTest {
 
   /**
    * Sets up objects for the test methods.
-   * @throws Exception exception
+   * 
+   * @throws Exception
+   *           exception
    */
   @Before
   public void setUp() throws Exception {
     parsedInput = new HashMap<>();
-    gameState = new StateA();
-    stateSpy = Mockito.spy(StateA.getInstance());
+    gameState = new GameStateA();
+    stateSpy = Mockito.spy(GameStateA.getInstance());
     host = Mockito.mock(GameHost.class);
     gs = Mockito.mock(GameSession.class);
   }
 
   /**
    * Cleans up after methods.
-   * @throws Exception exception
+   * 
+   * @throws Exception
+   *           exception
    */
   @After
   public void tearDown() throws Exception {
@@ -78,7 +80,7 @@ public class GameStateTest {
    */
   @Test
   public void testStop() {
-    gameState = new StateB();
+    gameState = new GameStateB();
     gameState.setHost(host);
     gameState.setSession(gs);
     gameState.start();
@@ -120,10 +122,11 @@ public class GameStateTest {
    */
   @Test
   public void testInvalidHandleInput() {
-    gameState = new StateD();
+    gameState = new GameStateD();
     gameState.setHost(host);
     String input = "test";
     parsedInput.put("param_1", "B");
+    parsedInput.put("command", "test");
     gameState.handleInput(input, parsedInput);
     Mockito.verify(host, Mockito.never()).sendAll(Mockito.anyString());
     parsedInput.remove("param_1");
@@ -131,13 +134,13 @@ public class GameStateTest {
     gameState.handleInput(input, parsedInput);
     Mockito.verify(host, Mockito.never()).sendAll(Mockito.anyString());
   }
-  
+
   /**
    * Test for handleInput method, with BEGIN message.
    */
   @Test
   public void testBeginHandleInput() {
-    gameState = new StateD();
+    gameState = new GameStateD();
     gameState.setHost(host);
     gameState.setSession(gs);
     String input = "BEGIN[D]";
@@ -145,15 +148,15 @@ public class GameStateTest {
     parsedInput.put("command", "BEGIN");
     gameState.handleInput(input, parsedInput);
     Mockito.verify(host).sendAll(Mockito.anyString());
-    //Mockito.verify(stateSpy).start();
+    // Mockito.verify(stateSpy).start();
   }
-  
+
   /**
    * Test for handleInput method, with DONE message.
    */
   @Test
   public void testDoneHandleInput() {
-    gameState = new StateD();
+    gameState = new GameStateD();
     gameState.setHost(host);
     gameState.setSession(gs);
     gameState.setActive(true);
@@ -162,15 +165,15 @@ public class GameStateTest {
     parsedInput.put("command", "DONE");
     gameState.handleInput(input, parsedInput);
     Mockito.verify(host, Mockito.atLeastOnce()).sendAll(Mockito.anyString());
-    //Mockito.verify(stateSpy).stop();
+    // Mockito.verify(stateSpy).stop();
   }
-  
+
   /**
    * Test for handleInput method with invalid command.
    */
   @Test
   public void tesIgnoreHandleInput() {
-    gameState = new StateD();
+    gameState = new GameStateD();
     gameState.setHost(host);
     gameState.setSession(gs);
     gameState.setActive(true);
@@ -180,13 +183,13 @@ public class GameStateTest {
     gameState.handleInput(input, parsedInput);
     Mockito.verify(host, Mockito.never()).sendAll(Mockito.anyString());
   }
-  
+
   /**
    * Test for handleInput method with invalid command and active = false.
    */
   @Test
   public void tesIgnoreHandleInputFalse() {
-    gameState = new StateD();
+    gameState = new GameStateD();
     gameState.setHost(host);
     gameState.setSession(gs);
     gameState.setActive(false);

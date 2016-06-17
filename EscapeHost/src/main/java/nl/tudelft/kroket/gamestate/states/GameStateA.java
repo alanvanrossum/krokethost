@@ -10,7 +10,7 @@ import nl.tudelft.kroket.net.protocol.Protocol;
  * This is the first game state. In this game state minigame A can be started and ended. The game
  * can progress to state B.
  */
-public class StateA extends GameState {
+public class GameStateA extends GameState {
 
   /** Singleton reference to logger. */
   static final Logger log = Logger.getInstance();
@@ -18,9 +18,10 @@ public class StateA extends GameState {
   /** Class simpleName, used as tag for logging. */
   private final String className = this.getClass().getSimpleName();
 
+  /** Identifier of the state, used for messages. */
   private static final String STATE_NAME = "A";
 
-  private static GameState instance = new StateA();
+  private static GameState instance = new GameStateA();
 
   /**
    * Getter for the instance.
@@ -29,6 +30,13 @@ public class StateA extends GameState {
    */
   public static GameState getInstance() {
     return instance;
+  }
+  
+  /**
+   * Creates a new State A.
+   */
+  public void newState() {
+	  instance = new GameStateA();
   }
 
   /**
@@ -66,19 +74,24 @@ public class StateA extends GameState {
    */
   @Override
   public void handleInput(String input, HashMap<String, String> parsedInput) {
-
     log.info(className, "handleInput in state " + getName());
 
+    if (parsedInput.get("command").equals(Protocol.COMMAND_BONUSTIME)) {
+      session.bonusTime();
+    } else if (parsedInput.get("command").equals(Protocol.COMMAND_GAMEOVER)) {
+      session.gameOver();
+    }
+    
     if (!parsedInput.containsKey("param_0") || !parsedInput.get("param_0").equals(getName())) {
       return;
     }
 
     if (!isActive()) {
-      if (parsedInput.get("command").equals("BEGIN")) {
+      if (parsedInput.get("command").equals(Protocol.COMMAND_BEGIN)) {
         host.sendAll(input);
         start();
       }
-    } else if (parsedInput.get("command").equals("DONE")) {
+    } else if (parsedInput.get("command").equals(Protocol.COMMAND_DONE)) {
       if (parsedInput.containsKey("param_1")) {
         advance();
         return;
@@ -86,7 +99,8 @@ public class StateA extends GameState {
 
       host.sendAll(input);
       stop();
-    } else {
+    
+  	} else {
       log.info(className, "Input ignored.");
     }
   }

@@ -14,16 +14,23 @@ import nl.tudelft.kroket.log.Logger;
 import nl.tudelft.kroket.user.User;
 import nl.tudelft.kroket.user.User.PlayerType;
 
+/**
+ * Class that hosts the game.
+ * 
+ * @author Team Kroket
+ */
 public class GameHost implements Runnable {
 
   /** List of clients connected to the server. */
   public static HashMap<Socket, ClientInstance> clientList = new HashMap<Socket, ClientInstance>();
 
+  /** List of game sessions. */
   private List<GameSession> sessions = new ArrayList<GameSession>();
 
   /** Value to keep track whether socket was initialized. */
   private static boolean initialized;
 
+  /** Class name, used as tag for logging. */
   private static String className = "GameHost";
 
   /** The serverport int. */
@@ -41,11 +48,18 @@ public class GameHost implements Runnable {
   /** The running Thread. */
   protected Thread runningThread = null;
 
+  /** Id of the current session. */
   private int currentSessionId;
 
   /** The thread pool. */
   protected ExecutorService threadPool = Executors.newFixedThreadPool(Settings.THREAD_POOL_MAX);
 
+  /**
+   * Constructor for the GameHost.
+   * 
+   * @param port
+   *          the portnumber used.
+   */
   public GameHost(int port) {
     serverPort = port;
 
@@ -53,16 +67,31 @@ public class GameHost implements Runnable {
 
     sessions.add(currentSessionId, new GameSession(this, currentSessionId));
   }
-  
+
+  /**
+   * Called upon update. Attempts to start a session whenever ready.
+   */
   public void update() {
-    startSession();
-    
-    getCurrentSession().update();
-    
+    GameSession session = getCurrentSession();
+
+    if (!session.isReady()) {
+      log.info(className, "Cannot start session: not ready");
+    } else if (!session.isActive()) {
+
+      log.info(className, "Starting current session...");
+
+      session.startSession();
+
+      // currentSessionId += 1;
+    }
   }
 
+  /**
+   * Getter for the current game session.
+   * 
+   * @return the current game session.
+   */
   public GameSession getCurrentSession() {
-  
     return sessions.get(currentSessionId);
   }
 
@@ -94,6 +123,51 @@ public class GameHost implements Runnable {
     log.info(className, "Socket " + clientSocket.getRemoteSocketAddress().toString() + " removed.");
   }
 
+  private void initialize() {
+    log.info(className, "Creating socket...");
+
+    try {
+      serverSocket = new ServerSocket(serverPort);
+      initialized = true;
+    } catch (IOException exception) {
+      log.error(className, "Error: " + exception);
+      initialized = false;
+    }
+
+    if (serverSocket == null) {
+      initialized = false;
+    }
+
+  }
+
+  private void mainLoop() {
+
+    Socket clientSocket = null;
+    try {
+      log.info(className,
+          String.format("Listening for incoming connections on port %d...", serverPort));
+      clientSocket = serverSocket.accept();
+
+      log.info(className, "Connection accepted. Incoming connection from "
+          + clientSocket.getRemoteSocketAddress().toString());
+
+    } catch (IOException error) {
+      error.printStackTrace();
+    }
+
+    // hand the client's socket to a new thread in the pool and
+    // start the thread
+    ClientInstance instance = new ClientInstance(this, clientSocket);
+
+    clientList.put(clientSocket, instance);
+
+    getCurrentSession().addClient(clientSocket, instance);
+
+    threadPool.execute(instance);
+
+    printStatus();
+  }
+
   /**
    * The run class.
    */
@@ -106,127 +180,105 @@ public class GameHost implements Runnable {
 
     while (!initialized) {
 
-      log.info(className, "Creating socket...");
+      initialize();
 
-      try {
-        serverSocket = new ServerSocket(serverPort);
-        break;
-      } catch (IOException exception) {
-        log.error(className, "Error: " + exception);
-        initialized = false;
-      }
       try {
         Thread.sleep(Settings.INTERVAL_SOCKET_RETRY * 1000);
       } catch (InterruptedException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
       }
 
     }
 
-    if (serverSocket == null) {
-      initialized = false;
-    } else {
+    // keep listening for incoming connections
+    // until we manually terminate the server or
+    // some error (we cannot recover from) occurs
+    while (!isStopped()) {
 
-      initialized = true;
-
-      // keep listening for incoming connections
-      // until we manually terminate the server or
-      // some error (we cannot recover from) occurs
-      while (!isStopped()) {
-        Socket clientSocket = null;
-        try {
-          log.info(className,
-              String.format("Listening for incoming connections on port %d...", serverPort));
-          clientSocket = serverSocket.accept();
-
-          log.info(className, "Connection accepted. Incoming connection from "
-              + clientSocket.getRemoteSocketAddress().toString());
-
-        } catch (IOException error) {
-          error.printStackTrace();
-        }
-
-        // hand the client's socket to a new thread in the pool and
-        // start the thread
-        ClientInstance instance = new ClientInstance(this, clientSocket);
-
-        clientList.put(clientSocket, instance);
-
-        getCurrentSession().addClient(clientSocket, instance);
-
-        threadPool.execute(instance);
-
-        printStatus();
-
-      }
-
-      for (GameSession session : sessions) {
-        session.stopSession();
-      }
-
-      for (Entry<Socket, ClientInstance> entry : clientList.entrySet()) {
-
-        Socket socket = entry.getKey();
-        ClientInstance user = entry.getValue();
-
-        user.sendMessage("Server is closing. Goodbye. :)");
-        try {
-          socket.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-
-      }
-
-      stop();
-      threadPool.shutdown();
+      mainLoop();
     }
-  }
 
-  public void startSession() {
-
-    GameSession session = getCurrentSession();
-
-    if (!session.isReady()) {
-      // System.out.println("Cannot start session: not ready");
-    } else if (!session.isActive()) {
-
-      System.out.println("Starting current session...");
-
-      session.startSession();
-
-      // currentSessionId += 1;
-    }
+    terminate();
 
   }
 
-  public void stopSession() {
-    GameSession session = getCurrentSession();
+  public void terminate() {
 
-    if (session.isActive()) {
+    log.info(className, "Terminating...");
+
+    for (GameSession session : sessions) {
       session.stopSession();
-
-      currentSessionId += 1;
-
-      sessions.add(currentSessionId, new GameSession(this, currentSessionId));
     }
+
+    for (Entry<Socket, ClientInstance> entry : clientList.entrySet()) {
+
+      Socket socket = entry.getKey();
+      ClientInstance user = entry.getValue();
+
+      user.sendMessage("Server is closing. Goodbye. :)");
+      try {
+        socket.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+
+    }
+
+    stop();
+    threadPool.shutdown();
   }
 
-  public List<GameSession> getSessions() {
+  // /**
+  // * Stops the current game session.
+  // */
+  // public void stopSession() {
+  // GameSession session = getCurrentSession();
+  //
+  // if (session.isActive()) {
+  // session.stopSession();
+  //
+  // currentSessionId += 1;
+  //
+  // sessions.add(currentSessionId, new GameSession(this, currentSessionId));
+  // }
+  // }
 
+  public void newSession() {
+    currentSessionId++;
+    sessions.add(currentSessionId, new GameSession(this, currentSessionId));
+    getCurrentSession().getCurrentState().setSession(getCurrentSession());
+  }
+
+  /**
+   * Getter for the list of game sessions.
+   * 
+   * @return the list of sessions.
+   */
+  public List<GameSession> getSessions() {
     return sessions;
   }
 
+  /**
+   * Getter for the initialized boolean.
+   * 
+   * @return true iff the session is initialized.
+   */
   public boolean isInitialized() {
     return initialized;
   }
 
+  /**
+   * Getter for the isStopped boolean.
+   * 
+   * @return true iff the session is stopped.
+   */
   private synchronized boolean isStopped() {
     return isStopped;
   }
 
-  /** The stop method. */
+  /**
+   * Synchronized method for stopping a session.
+   */
   private synchronized void stop() {
     isStopped = true;
     try {
@@ -236,7 +288,13 @@ public class GameHost implements Runnable {
     }
   }
 
-  /** The count players method. */
+  /**
+   * Counts the players in a session of a specific type.
+   * 
+   * @param type
+   *          the type of the players counted.
+   * @return the amount of players of that type.
+   */
   public static int countUsers(PlayerType type) {
     int sum = 0;
     for (Entry<Socket, ClientInstance> entry : clientList.entrySet()) {
@@ -314,27 +372,20 @@ public class GameHost implements Runnable {
    * @return
    */
   public void sendAll(String message) {
-    for (Entry<Socket, ClientInstance> entry : clientList.entrySet()) {
-
-      if (entry.getValue() != null) {
-        entry.getValue().sendMessage(message);
-      }
-    }
-    log.info("EscapeHost", "Sending message: " + message);
     log.info("EscapeHost", "Message sent to " + clientList.size() + " user(s)");
+    getCurrentSession().sendAll(message);
   }
 
-  public static void sendType(PlayerType type, String message) {
-    for (Entry<Socket, ClientInstance> entry : clientList.entrySet()) {
-
-      User user = entry.getValue().getUser();
-
-      if (user.getType() == type) {
-        entry.getValue().sendMessage(message);
-      }
-    }
-    log.info("EscapeHost", "Sending message: " + message);
-    log.info("EscapeHost", "Message sent to type: " + type.toString());
+  /**
+   * Sends a message to all clients of a specific type.
+   * 
+   * @param type
+   *          the type of the clients the message should be sent to.
+   * @param message
+   *          the message to be sent.
+   */
+  public void sendType(PlayerType type, String message) {
+    getCurrentSession().sendType(type, message);
   }
 
   /**
@@ -347,12 +398,20 @@ public class GameHost implements Runnable {
     sendType(PlayerType.MOBILE, message);
   }
 
+  /**
+   * Send a message to all connected virtual clients.
+   * 
+   * @param message
+   *          the string to be sent
+   */
   public void sendVirtual(String message) {
     sendType(PlayerType.VIRTUAL, message);
   }
 
+  /**
+   * Print the list of connected clients.
+   */
   private void printClients() {
-
     if (clientList.isEmpty()) {
       System.out.println("No clients connected.");
       return;
@@ -367,8 +426,10 @@ public class GameHost implements Runnable {
     }
   }
 
+  /**
+   * Print information about all the sessions.
+   */
   public void printSessions() {
-
     for (GameSession session : getSessions()) {
       session.printSession();
 
@@ -380,38 +441,71 @@ public class GameHost implements Runnable {
     }
   }
 
+  /**
+   * Print the status of all sessions.
+   */
   public void printStatus() {
     printClients();
     printSessions();
   }
-  
+
+  /**
+   * Getter for the list of clients.
+   * 
+   * @return the list of clients.
+   */
   public static HashMap<Socket, ClientInstance> getClientList() {
     return clientList;
   }
 
+  /**
+   * Getter for the class name.
+   * 
+   * @return the name of this class.
+   */
   public static String getClassName() {
     return className;
   }
 
+  /**
+   * Getter for the number of the server port.
+   * 
+   * @return the server port number.
+   */
   public int getServerPort() {
     return serverPort;
   }
 
+  /**
+   * Getter for the current session id.
+   * 
+   * @return the id of the current session.
+   */
   public int getCurrentSessionId() {
     return currentSessionId;
   }
-  
+
+  /**
+   * Getter for the isStopped boolean.
+   * 
+   * @return true iff the session is stopped.
+   */
   public boolean getStopped() {
     return isStopped;
   }
 
+  /**
+   * Checks whether two sessions are equal.
+   * 
+   * @return true iff the sessions are equal.
+   */
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof GameHost) {
-      GameHost that = (GameHost)obj;
+      GameHost that = (GameHost) obj;
       return (this.isStopped == that.getStopped() && this.getServerPort() == that.getServerPort()
-          && this.getClientList().keySet().containsAll(that.getClientList().keySet())
-              && this.clientList.values().contains(that.getClientList().values()));
+          && this.getClientList().keySet().containsAll(that.getClientList().keySet()) && this.clientList
+          .values().contains(that.getClientList().values()));
     }
     return false;
   }

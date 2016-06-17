@@ -4,7 +4,6 @@ package nl.tudelft.kroket.server;
  * Settings for EscapeServer. This class simply contains all settings used to control the server.
  * 
  * @author Team Kroket
- *
  */
 public class Settings {
 
@@ -26,5 +25,4 @@ public class Settings {
   /** Number of threads available in the pool. */
   public static final int THREAD_POOL_MAX = 10;
 
-  public static final int TIMELIMIT = 15 * 60;
 }

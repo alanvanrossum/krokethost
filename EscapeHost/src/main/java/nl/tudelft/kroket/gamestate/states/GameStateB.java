@@ -13,7 +13,7 @@ import nl.tudelft.kroket.server.Settings;
  * This is the second game state. In this game state minigame B can be started and ended. The game
  * can progress to state C.
  */
-public class StateB extends GameState {
+public class GameStateB extends GameState {
 
   /** Singleton reference to logger. */
   static final Logger log = Logger.getInstance();
@@ -21,31 +21,49 @@ public class StateB extends GameState {
   /** Class simpleName, used as tag for logging. */
   private final String className = this.getClass().getSimpleName();
 
+  /** Identifier of the state, used for messages. */
   private static final String STATE_NAME = "B";
 
+  /** Counter for how many players have finished the minigame. */
   private int finishedCounter = 0;
 
   private boolean inputValid = false;
 
-  private static GameState instance = new StateB();
+  private static GameState instance = new GameStateB();
 
-  // The sequence that is send to the vr and mobile clients.
+  /** The sequence that is send to the VR and mobile clients. */
   public ArrayList<String> sequencesTotal = new ArrayList<String>();
-  
+
+  /** The sequence that is entered by the VR player. */
   public ArrayList<String> buttonSequence = new ArrayList<String>();
 
+  /**
+   * Returns the instance of this game state.
+   * 
+   * @return the instance.
+   */
   public static GameState getInstance() {
     return instance;
   }
 
+  /**
+   * Creates a new State B.
+   */
+  public void newState() {
+    instance = new GameStateB();
+  }
+
+  /**
+   * Starts the minigame belonging to this state.
+   */
   @Override
   public void start() {
     setActive(true);
-    
+
     finishedCounter = 0;
     inputValid = false;
     buttonSequence.clear();
-    
+
     buttonSequence = generateButtonSequence();
 
     String message = String.format("%s[%s]%s", Protocol.COMMAND_BEGIN, getName(),
@@ -56,7 +74,7 @@ public class StateB extends GameState {
   }
 
   /**
-   * Sends the input to the virtual client and changes the game state to C.
+   * Acts accordingly upon the inputs received from the clients.
    * 
    * @param input
    *          the input string received from the client
@@ -65,8 +83,13 @@ public class StateB extends GameState {
    */
   @Override
   public void handleInput(String input, HashMap<String, String> parsedInput) {
-
     log.info(className, "handleInput in state " + getName());
+
+    if (parsedInput.get("command").equals(Protocol.COMMAND_BONUSTIME)) {
+      session.bonusTime();
+    } else if (parsedInput.get("command").equals(Protocol.COMMAND_GAMEOVER)) {
+      session.gameOver();
+    }
 
     if (!parsedInput.containsKey("param_0") || !parsedInput.get("param_0").equals(getName())) {
       return;
@@ -74,30 +97,25 @@ public class StateB extends GameState {
 
     if (!isActive()) {
 
-      if (parsedInput.get("command").equals("BEGIN")) {
+      if (parsedInput.get("command").equals(Protocol.COMMAND_BEGIN)) {
         start();
       }
 
-    } else if (parsedInput.get("command").equals("VERIFY")) {
-
+    } else if (parsedInput.get("command").equals(Protocol.COMMAND_VERIFY)) {
       finishedCounter++;
-
       log.info(className, "Mobile players completed: " + finishedCounter);
 
-    } else if (parsedInput.get("command").equals("RESTART")) {
-
+    } else if (parsedInput.get("command").equals(Protocol.COMMAND_RESTART)) {
       log.info(className, "RESTARTING State " + getName());
       start();
 
-    } else if (parsedInput.get("command").equals("DONE")) {
-
+    } else if (parsedInput.get("command").equals(Protocol.COMMAND_DONE)) {
       inputValid = true;
-      
       log.info(className, "VR-client has completed this stage.");
     }
 
     if (gameComplete()) {
-      
+
       log.info(className, "Game complete!");
       stop();
     }
@@ -110,8 +128,7 @@ public class StateB extends GameState {
    * @return
    */
   private boolean gameComplete() {
-    // return (finishedCounter >= Settings.REQUIRED_MOBILE && inputValid);
-    // return (finishedCounter >= Settings.REQUIRED_MOBILE && inputValid);
+
     if (finishedCounter >= Settings.REQUIRED_MOBILE) {
       if (inputValid) {
         return true;
@@ -122,6 +139,7 @@ public class StateB extends GameState {
     } else {
       return false;
     }
+
     return false;
   }
 
@@ -172,15 +190,15 @@ public class StateB extends GameState {
   public int getFinishedCounter() {
     return finishedCounter;
   }
-  
-  public void setFinishedCounter(int count){
+
+  public void setFinishedCounter(int count) {
     finishedCounter = count;
   }
 
   public boolean isInputValid() {
     return inputValid;
   }
-  
+
   public void setInputValid(boolean bool) {
     inputValid = bool;
   }
@@ -188,7 +206,5 @@ public class StateB extends GameState {
   public ArrayList<String> getButtonSequence() {
     return buttonSequence;
   }
-  
- 
 
 }

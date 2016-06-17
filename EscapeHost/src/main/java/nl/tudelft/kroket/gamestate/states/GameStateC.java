@@ -12,7 +12,7 @@ import nl.tudelft.kroket.net.protocol.Protocol;
  * This is the third game state. In this game state minigame C can be started and ended. The game
  * can progress to state D.
  */
-public class StateC extends GameState {
+public class GameStateC extends GameState {
 
   /** Singleton reference to logger. */
   static final Logger log = Logger.getInstance();
@@ -22,29 +22,55 @@ public class StateC extends GameState {
 
   private Random random = new Random();
 
+  /** Identifier of the state, used for messages. */
   private static final String STATE_NAME = "C";
 
-  private static GameState instance = new StateC();
+  private static GameState instance = new GameStateC();
 
+  /** The lenght of the color sequence. */
+  private int sequenceLength = 7;
+  
+  /**
+   * Returns the instance of this game state.
+   * 
+   * @return the instance.
+   */
   public static GameState getInstance() {
     return instance;
   }
+  
+  /**
+   * Creates a new State C.
+   */
+  public void newState() {
+	  instance = new GameStateC();
+  }
 
-  // The length of the color sequence.
-  private int sequenceLength = 7;
-
+  /**
+   * Acts accordingly upon the inputs received from the clients.
+   * 
+   * @param input
+   *          the input string received from the client
+   * @param parsedInput
+   *          the parsed input
+   */
   @Override
   public void handleInput(String input, HashMap<String, String> parsedInput) {
-
     log.info(className, "handleInput in state " + getName());
 
+    if (parsedInput.get("command").equals(Protocol.COMMAND_BONUSTIME)) {
+      session.bonusTime();
+    } else if (parsedInput.get("command").equals(Protocol.COMMAND_GAMEOVER)) {
+      session.gameOver();
+    }
+    
     // make sure we received a message for the correct state
     if (!parsedInput.containsKey("param_0") || !parsedInput.get("param_0").equals(getName())) {
       return;
     }
 
     if (!isActive()) {
-      if (parsedInput.get("command").equals("BEGIN")) {
+      if (parsedInput.get("command").equals(Protocol.COMMAND_BEGIN)) {
         // Generate the color sequence that we will send to the players
         ArrayList<String> colorSequence = generateColorSequence();
 
@@ -53,7 +79,7 @@ public class StateC extends GameState {
         host.sendAll(message);
         start();
       }
-    } else if (parsedInput.get("command").equals("DONE")) {
+    } else if (parsedInput.get("command").equals(Protocol.COMMAND_DONE)) {
       host.sendAll(input);
       stop();
     } else {
@@ -121,6 +147,9 @@ public class StateC extends GameState {
     return res.toString();
   }
 
+  /**
+   * Return the identifier for this state.
+   */
   @Override
   public String getName() {
     return STATE_NAME;

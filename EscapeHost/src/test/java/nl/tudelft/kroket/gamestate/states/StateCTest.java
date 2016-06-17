@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import nl.tudelft.kroket.gamestate.states.StateC;
+import nl.tudelft.kroket.gamestate.states.GameStateC;
 import nl.tudelft.kroket.server.GameHost;
 import nl.tudelft.kroket.server.GameSession;
 import org.junit.After;
@@ -23,8 +23,8 @@ import java.util.HashMap;
  */
 public class StateCTest {
   
-  StateC gameState;
-  StateC stateSpy;
+  GameStateC gameState;
+  GameStateC stateSpy;
   GameHost host;
   GameSession gs;
   private HashMap<String, String> parsedInput;
@@ -36,7 +36,7 @@ public class StateCTest {
   @Before
   public void setUp() throws Exception {
     parsedInput = new HashMap<>();
-    gameState = new StateC();
+    gameState = new GameStateC();
     stateSpy = Mockito.spy(gameState);
     host = Mockito.mock(GameHost.class);
     gs = Mockito.mock(GameSession.class);
@@ -59,7 +59,7 @@ public class StateCTest {
    */
   @Test
   public void testGetInstance() {
-    assertNotNull(StateC.getInstance());
+    assertNotNull(GameStateC.getInstance());
   }
   
   /**
@@ -69,6 +69,7 @@ public class StateCTest {
   public void testInvalidHandleInput() {
     String input = "test";
     parsedInput.put("param_5", "C");
+    parsedInput.put("command", "test");
     gameState.handleInput(input, parsedInput);
     Mockito.verify(host, Mockito.never()).sendAll(Mockito.anyString());
     parsedInput.remove("param_5");
@@ -136,7 +137,7 @@ public class StateCTest {
    */
   @Test
   public void testGenerateColorSequence() {
-    StateC gameState = new StateC();
+    GameStateC gameState = new GameStateC();
     ArrayList<String> randomColours = gameState.generateColorSequence();
     assertEquals(7, randomColours.size());
     assertTrue(randomColours.contains("RED") || randomColours.contains("BLUE")
@@ -148,7 +149,7 @@ public class StateCTest {
    */
   @Test
   public void testGetRandomColor() {
-    StateC gameState = new StateC();
+    GameStateC gameState = new GameStateC();
     String colour = gameState.getRandomColor();
     assertTrue(colour.equals("RED") || colour.equals("BLUE") || colour.equals("GREEN")
         || colour.equals("YELLOW"));
@@ -159,7 +160,7 @@ public class StateCTest {
    */
   @Test
   public void testSequenceToString() {
-    StateC gameState = new StateC();
+    GameStateC gameState = new GameStateC();
     ArrayList<String> randomColours = gameState.generateColorSequence();
     String actual = gameState.sequenceToString(randomColours);
     String expected = "";

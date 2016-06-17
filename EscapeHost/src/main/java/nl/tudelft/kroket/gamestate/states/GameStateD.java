@@ -8,18 +8,19 @@ import nl.tudelft.kroket.net.protocol.Protocol;
  * State for the lock game.
  * @author Team Kroket
  */
-public class StateD extends GameState {
+public class GameStateD extends GameState {
 	
     /** Singleton reference to logger. */
     static final Logger log = Logger.getInstance();
 
+    /** Identifier of the state, used for messages. */
     private static final String STATE_NAME = "D";
     
     /** Class simpleName, used as tag for logging. */
     private final String className = this.getClass().getSimpleName();
 
     /** The instance of this state */
-    private static GameState instance = new StateD();
+    private static GameState instance = new GameStateD();
 
     /**
      * Getter for the instance.
@@ -28,6 +29,13 @@ public class StateD extends GameState {
      */
     public static GameState getInstance() {
         return instance;
+    }
+    
+    /**
+     * Creates a new State D.
+     */
+    public void newState() {
+  	  instance = new GameStateD();
     }
 
     /**
@@ -49,7 +57,7 @@ public class StateD extends GameState {
 
       // End the game
       host.sendAll(Protocol.COMMAND_GAMEWON);
-      session.setGameEnded(true);
+      session.newSession();
     }
 
 }
